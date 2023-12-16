@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data;
 
-public sealed class MySqlContext : DbContext
+public sealed class MySqlContext : DbContext, IGroceryStoreContext
 {
     public MySqlContext() => Database.EnsureCreated();
 
