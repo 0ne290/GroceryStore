@@ -1,8 +1,10 @@
 ﻿// ReSharper disable CollectionNeverUpdated.Global
 
-namespace GroceryStore.Data.Models;
+using GroceryStore.Data.Interfaces;
 
-public sealed class Manufacturer
+namespace GroceryStore.Data.Entities;
+
+public sealed class Manufacturer : IManufacturer
 {
     public int Key { get; set; }
 
@@ -24,13 +26,13 @@ public sealed class Manufacturer
 
     public string? HouseLetter { get; set; }
     
-    public Country? CountryKeyNavigation { get; set; }
+    public ICountry? CountryKeyNavigation { get; set; }
     
-    public Region? RegionKeyNavigation { get; set; }
+    public IRegion? RegionKeyNavigation { get; set; }
     
-    public City? CityKeyNavigation { get; set; }
+    public ICity? CityKeyNavigation { get; set; }
 
-    public Street? StreetKeyNavigation { get; set; }
+    public IStreet? StreetKeyNavigation { get; set; }
 
-    public ICollection<Product> Products { get; set; } = new List<Product>();
+    public ICollection<IProduct> Products { get; set; } = new List<IProduct>();
 }
