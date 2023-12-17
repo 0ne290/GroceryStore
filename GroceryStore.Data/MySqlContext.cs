@@ -1,45 +1,24 @@
-﻿using GroceryStore.Data.Models;
+﻿using GroceryStore.Data.Interfaces;
+using GroceryStore.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace GroceryStore.Data;
 
-public sealed class MySqlContext : DbContext, IGroceryStoreContext
+public sealed class MySqlContext : IGroceryStoreContext
 {
-    public MySqlContext() => Database.EnsureCreated();
+    public MySqlContext(string connectionString)
+    {
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new ArgumentException("connectionString should not be empty.", nameof(connectionString));
 
-    public MySqlContext(DbContextOptions<MySqlContext> options) : base(options) => Database.EnsureCreated();
-    
-    public DbSet<Country> Countries { get; set; }
-    
-    public DbSet<Region> Regions { get; set; }
+        _connectionString = connectionString;
+        
+        Database.EnsureCreated();
+    }
 
-    public DbSet<City> Cities { get; set; }
-    
-    public DbSet<Street> Streets { get; set; }
-    
-    public DbSet<Store> Stores { get; set; }
-    
-    public DbSet<Warehouse> Warehouses { get; set; }
-    
-    public DbSet<Product> Products { get; set; }
-    
-    public DbSet<ProductInStore> ProductsInStores { get; set; }
-    
-    public DbSet<ProductInWarehouse> ProductsInWarehouses { get; set; }
-
-    public DbSet<Position> Positions { get; set; }
-
-    public DbSet<Employee> StoreStaff { get; set; }
-
-    public DbSet<RegularCustomer> RegularCustomers { get; set; }
-
-    public DbSet<Sale> Sales { get; set; }
-
-    public DbSet<Manufacturer> Manufacturers { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseMySql("server=localhost;user=root;password=!EdCbA21435=;database=GroceryStore", ServerVersion.AutoDetect("server=localhost;user=root;password=!EdCbA21435=;database=GroceryStore"));
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -54,8 +33,8 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
                 .HasColumnName("Код города");
             entity.Property(e => e.RegionKey).HasColumnName("Код региона");
             entity.Property(e => e.Name).HasMaxLength(255);
-
-            entity.HasOne(d => d.RegionKeyNavigation).WithMany(p => p.Cities)
+            
+            entity.HasOne(d => (Region)d.RegionKeyNavigation).WithMany(p => (IEnumerable<City>)p.Cities)
                 .HasForeignKey(d => d.RegionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("РегионыГорода");
@@ -88,17 +67,17 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.HouseLetter).HasMaxLength(255);
             entity.Property(e => e.HouseNumber).HasColumnName("Номер дома");
 
-            entity.HasOne(d => d.CityKeyNavigation).WithMany(p => p.Stores)
+            entity.HasOne(d => (City)d.CityKeyNavigation).WithMany(p => (IEnumerable<Store>)p.Stores)
                 .HasForeignKey(d => d.CityKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ГородаМагазины");
 
-            entity.HasOne(d => d.RegionKeyNavigation).WithMany(p => p.Stores)
+            entity.HasOne(d => (Region)d.RegionKeyNavigation).WithMany(p => (IEnumerable<Store>)p.Stores)
                 .HasForeignKey(d => d.RegionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("РегионыМагазины");
 
-            entity.HasOne(d => d.StreetKeyNavigation).WithMany(p => p.Stores)
+            entity.HasOne(d => (Street)d.StreetKeyNavigation).WithMany(p => (IEnumerable<Store>)p.Stores)
                 .HasForeignKey(d => d.StreetKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("УлицыМагазины");
@@ -115,17 +94,17 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.PositionKey).HasColumnName("Код должности");
             entity.Property(e => e.StoreKey).HasColumnName("Код магазина");
 
-            entity.HasOne(d => d.PositionKeyNavigation).WithMany(p => p.StoreStaff)
+            entity.HasOne(d => (Position)d.PositionKeyNavigation).WithMany(p => (IEnumerable<Employee>)p.StoreStaff)
                 .HasForeignKey(d => d.PositionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ДолжностиПерсонал магазинов");
 
-            entity.HasOne(d => d.StoreKeyNavigation).WithMany(p => p.Staff)
+            entity.HasOne(d => (Store)d.StoreKeyNavigation).WithMany(p => (IEnumerable<Employee>)p.Staff)
                 .HasForeignKey(d => d.StoreKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("МагазиныПерсонал магазинов");
         });
-
+        
         modelBuilder.Entity<RegularCustomer>(entity =>
         {
             entity.HasKey(e => e.Key).HasName("PrimaryKey");
@@ -149,11 +128,11 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.ProductKey).HasColumnName("Код_товара");
             entity.Property(e => e.CustomerKey).HasColumnName("Код клиента");
 
-            entity.HasOne(d => d.CustomerKeyNavigation).WithMany(p => p.Purchases)
+            entity.HasOne(d => (RegularCustomer)d.CustomerKeyNavigation).WithMany(p => (IEnumerable<Sale>)p.Purchases)
                 .HasForeignKey(d => d.CustomerKey)
                 .HasConstraintName("Постоянные клиентыПродажа");
 
-            entity.HasOne(d => d.ProductKeyNavigation).WithMany(p => p.Sales)
+            entity.HasOne(d => (Product)d.ProductKeyNavigation).WithMany(p => (IEnumerable<Sale>)p.Sales)
                 .HasForeignKey(d => d.ProductKey)
                 .HasConstraintName("ТоварыПродажа");
         });
@@ -174,22 +153,22 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.HouseNumber).HasColumnName("Номер_дома");
 
-            entity.HasOne(d => d.CityKeyNavigation).WithMany(p => p.Manufacturers)
+            entity.HasOne(d => (City)d.CityKeyNavigation).WithMany(p => (IEnumerable<Manufacturer>)p.Manufacturers)
                 .HasForeignKey(d => d.CityKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ГородаПроизводитель");
 
-            entity.HasOne(d => d.RegionKeyNavigation).WithMany(p => p.Manufacturers)
+            entity.HasOne(d => (Region)d.RegionKeyNavigation).WithMany(p => (IEnumerable<Manufacturer>)p.Manufacturers)
                 .HasForeignKey(d => d.RegionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("РегионыПроизводитель");
 
-            entity.HasOne(d => d.CountryKeyNavigation).WithMany(p => p.Manufacturers)
+            entity.HasOne(d => (Country)d.CountryKeyNavigation).WithMany(p => (IEnumerable<Manufacturer>)p.Manufacturers)
                 .HasForeignKey(d => d.CountryKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("СтраныПроизводитель");
 
-            entity.HasOne(d => d.StreetKeyNavigation).WithMany(p => p.Manufacturers)
+            entity.HasOne(d => (Street)d.StreetKeyNavigation).WithMany(p => (IEnumerable<Manufacturer>)p.Manufacturers)
                 .HasForeignKey(d => d.StreetKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("УлицыПроизводитель");
@@ -207,7 +186,7 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.CountryKey).HasColumnName("Код страны");
             entity.Property(e => e.Name).HasMaxLength(255);
 
-            entity.HasOne(d => d.CountryKeyNavigation).WithMany(p => p.Регионыs)
+            entity.HasOne(d => (Country)d.CountryKeyNavigation).WithMany(p => (IEnumerable<Region>)p.Regions)
                 .HasForeignKey(d => d.CountryKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("СтраныРегионы");
@@ -228,17 +207,17 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.HouseLetter).HasMaxLength(255);
             entity.Property(e => e.HouseNumber).HasColumnName("Номер дома");
 
-            entity.HasOne(d => d.CityKeyNavigation).WithMany(p => p.Warehouses)
+            entity.HasOne(d => (City)d.CityKeyNavigation).WithMany(p => (IEnumerable<Warehouse>)p.Warehouses)
                 .HasForeignKey(d => d.CityKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ГородаСклады");
 
-            entity.HasOne(d => d.RegionKeyNavigation).WithMany(p => p.Warehouses)
+            entity.HasOne(d => (Region)d.RegionKeyNavigation).WithMany(p => (IEnumerable<Warehouse>)p.Warehouses)
                 .HasForeignKey(d => d.RegionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("РегионыСклады");
 
-            entity.HasOne(d => d.StreetKeyNavigation).WithMany(p => p.Warehouses)
+            entity.HasOne(d => (Street)d.StreetKeyNavigation).WithMany(p => (IEnumerable<Warehouse>)p.Warehouses)
                 .HasForeignKey(d => d.StreetKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("УлицыСклады");
@@ -271,7 +250,7 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
                 .HasMaxLength(255)
                 .HasColumnName("Степень обработки");
 
-            entity.HasOne(d => d.ManufacturerKeyNavigation).WithMany(p => p.Products)
+            entity.HasOne(d => (Manufacturer)d.ManufacturerKeyNavigation).WithMany(p => (IEnumerable<Product>)p.Products)
                 .HasForeignKey(d => d.ManufacturerKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ПроизводительТовары");
@@ -288,15 +267,15 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.Quantity).HasColumnName("Кол-во");
             entity.Property(e => e.WarehouseKey).HasColumnName("Привезено со склада");
 
-            entity.HasOne(d => d.StoreKeyNavigation).WithMany(p => p.Products)
+            entity.HasOne(d => (Store)d.StoreKeyNavigation).WithMany(p => (IEnumerable<ProductInStore>)p.Products)
                 .HasForeignKey(d => d.StoreKey)
                 .HasConstraintName("МагазиныТовары в магазинах");
 
-            entity.HasOne(d => d.ProductKeyNavigation).WithMany(p => p.ProductsInStores)
+            entity.HasOne(d => (Product)d.ProductKeyNavigation).WithMany(p => (IEnumerable<ProductInStore>)p.ProductsInStores)
                 .HasForeignKey(d => d.ProductKey)
                 .HasConstraintName("ТоварыТовары в магазинах");
 
-            entity.HasOne(d => d.WarehouseKeyNavigation).WithMany(p => p.ProductsInStores)
+            entity.HasOne(d => (Warehouse)d.WarehouseKeyNavigation).WithMany(p => (IEnumerable<ProductInStore>)p.ProductsInStores)
                 .HasForeignKey(d => d.WarehouseKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("СкладыТовары в магазинах");
@@ -313,11 +292,11 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.DateOfManufacture).HasColumnName("Дата производства");
             entity.Property(e => e.Quantity).HasColumnName("Кол-во");
 
-            entity.HasOne(d => d.WarehouseKeyNavigation).WithMany(p => p.ProductsInWarehouses)
+            entity.HasOne(d => (Warehouse)d.WarehouseKeyNavigation).WithMany(p => (IEnumerable<ProductInWarehouse>)p.ProductsInWarehouses)
                 .HasForeignKey(d => d.WarehouseKey)
                 .HasConstraintName("СкладыТовары на складах");
 
-            entity.HasOne(d => d.ProductKeyNavigation).WithMany(p => p.ProductsInWarehouses)
+            entity.HasOne(d => (Product)d.ProductKeyNavigation).WithMany(p => (IEnumerable<ProductInWarehouse>)p.ProductsInWarehouses)
                 .HasForeignKey(d => d.ProductKey)
                 .HasConstraintName("ТоварыТовары на складах");
         });
@@ -334,10 +313,12 @@ public sealed class MySqlContext : DbContext, IGroceryStoreContext
             entity.Property(e => e.CityKey).HasColumnName("Код города");
             entity.Property(e => e.Name).HasMaxLength(255);
 
-            entity.HasOne(d => d.CityKeyNavigation).WithMany(p => p.Streets)
+            entity.HasOne(d => (City)d.CityKeyNavigation).WithMany(p => (IEnumerable<Street>)p.Streets)
                 .HasForeignKey(d => d.CityKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ГородаУлицы");
         });
     }
+    
+    private readonly string _connectionString;
 }

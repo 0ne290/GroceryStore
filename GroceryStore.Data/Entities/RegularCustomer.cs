@@ -1,8 +1,10 @@
 ﻿// ReSharper disable CollectionNeverUpdated.Global
 
-namespace GroceryStore.Data.Models;
+using GroceryStore.Data.Interfaces;
 
-public sealed class RegularCustomer
+namespace GroceryStore.Data.Entities;
+
+public sealed class RegularCustomer : IRegularCustomer
 {
     public int Key { get; set; }
 
@@ -12,5 +14,5 @@ public sealed class RegularCustomer
 
     public string? PhoneNumber { get; set; }
 
-    public ICollection<Sale> Purchases { get; set; } = new List<Sale>();
+    public ICollection<ISale> Purchases { get; set; } = new List<ISale>();
 }
