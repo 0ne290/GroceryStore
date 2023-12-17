@@ -17,7 +17,7 @@ internal static class Program
         
         CompositionRoot(connectionString);
 
-        var cityDto = new CityDto() { Key = 18, Name = "Abobus", RegionKey = 9 };
+        var cityDto = new CityDto() { Key = 18, Name = "Abobus", RegionKey = -1 };
         
         _cityService.AddCity(cityDto);
         
