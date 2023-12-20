@@ -4,9 +4,11 @@ namespace GroceryStore.Data.Entities;
 
 public sealed class Employee : IEmployee
 {
-    public int StoreKey { get; set; }
+    public int Key { get; set; }
 
     public string? FullName { get; set; }
+
+    public int? StoreKey { get; set; }
 
     public int? PositionKey { get; set; }
 
