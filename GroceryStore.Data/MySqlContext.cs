@@ -85,10 +85,13 @@ public sealed class MySqlContext : IGroceryStoreContext
 
         modelBuilder.Entity<Employee>(entity =>
         {
-            entity.HasKey(e => e.FullName).HasName("PrimaryKey");
+            entity.HasKey(e => e.Key).HasName("PrimaryKey");
 
             entity.ToTable("Персонал магазинов");
 
+            entity.Property(e => e.Key)
+                .ValueGeneratedNever()
+                .HasColumnName("Код сотрудника");
             entity.Property(e => e.FullName).HasColumnName("ФИО");
             entity.Property(e => e.EmploymentDate).HasColumnName("Дата приема на работу");
             entity.Property(e => e.PositionKey).HasColumnName("Код должности");
