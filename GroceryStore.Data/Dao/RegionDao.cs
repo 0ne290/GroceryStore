@@ -27,7 +27,19 @@ public class RegionDao
 
     public void Remove(Region region) => _dbContext.Regions.Remove(region);
 
-    public void SaveChanges() => _dbContext.SaveChanges();
+    public bool SaveChanges()
+    {
+        try
+        {
+            _dbContext.SaveChanges();
+        }
+        catch
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     private readonly IGroceryStoreContext _dbContext;
 }

@@ -1,5 +1,6 @@
 using GroceryStore.Data.Dao;
 using GroceryStore.Data.Entities;
+using GroceryStore.Data.Interfaces;
 using GroceryStore.Logic.Dto;
 
 namespace GroceryStore.Logic;
@@ -10,9 +11,9 @@ public class RegionService
 
     public void AddRegion(RegionDto regionDto)
     {
-        var city = RegionDtoToRegion(regionDto);
+        var region = RegionDtoToRegion(regionDto);
 
-        _regions.Create(city);
+        _regions.Create(region);
     }
 
     public IEnumerable<RegionDto> GetRegions()
@@ -23,11 +24,18 @@ public class RegionService
             select RegionToRegionDto(region);
     }
     
-    public void SaveChanges() => _regions.SaveChanges();
-
-    private RegionDto RegionToRegionDto(Region region) => new RegionDto() { Key = region.Key, Name = region.Name ?? "NullName", CountryKey = region.CountryKey ?? -1 };
+    public void UpdateRegion(RegionDto regionDto)
+    {
+        var region = RegionDtoToRegion(regionDto);
+        
+        _regions.Update(region);
+    }
     
-    private Region RegionDtoToRegion(RegionDto regionDto) => new Region() { Key = regionDto.Key, Name = regionDto.Name, CountryKey = regionDto.CountryKey };
+    public bool SaveChanges() => _regions.SaveChanges();
+
+    private RegionDto RegionToRegionDto(IRegion region) => new RegionDto() { Key = region.Key, Name = region.Name ?? "NullName", CountryKey = region.CountryKey ?? -1 };
+    
+    private Region RegionDtoToRegion(RegionDto regionDto) => new Region() { Key = regionDto.Key, Name = regionDto.Name == "NullName" ? null : regionDto.Name, CountryKey = regionDto.CountryKey == -1 ? null : regionDto.CountryKey };
 
     private readonly RegionDao _regions;
 }

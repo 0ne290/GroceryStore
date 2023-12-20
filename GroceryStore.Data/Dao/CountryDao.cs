@@ -27,7 +27,19 @@ public class CountryDao
 
     public void Remove(Country country) => _dbContext.Countries.Remove(country);
 
-    public void SaveChanges() => _dbContext.SaveChanges();
+    public bool SaveChanges()
+    {
+        try
+        {
+            _dbContext.SaveChanges();
+        }
+        catch
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     private readonly IGroceryStoreContext _dbContext;
 }

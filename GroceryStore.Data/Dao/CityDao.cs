@@ -27,7 +27,19 @@ public class CityDao
 
     public void Remove(City city) => _dbContext.Cities.Remove(city);
 
-    public void SaveChanges() => _dbContext.SaveChanges();
+    public bool SaveChanges()
+    {
+        try
+        {
+            _dbContext.SaveChanges();
+        }
+        catch
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     private readonly IGroceryStoreContext _dbContext;
 }
