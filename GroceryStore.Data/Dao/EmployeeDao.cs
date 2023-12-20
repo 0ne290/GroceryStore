@@ -9,13 +9,13 @@ public class EmployeeDao
 {
     public EmployeeDao(IGroceryStoreContext dbContext) => _dbContext = dbContext;
 
-    public void Create(Employee employee) => _dbContext.Staff.Add(employee);
+    public void Create(Employee employee) => _dbContext.StoreStaff.Add(employee);
 
-    public IEnumerable<Employee> GetAll() => _dbContext.Staff.AsNoTracking();
+    public IEnumerable<Employee> GetAll() => _dbContext.StoreStaff.AsNoTracking();
 
     public IEmployee GetByKey(int key)
     {
-        var employee = _dbContext.Staff.Find(key);
+        var employee = _dbContext.StoreStaff.Find(key);
         
         if (employee is null)
             return new NullEmployee();
@@ -23,9 +23,9 @@ public class EmployeeDao
         return employee;
     }
 
-    public void Update(Employee employee) => _dbContext.Staff.Update(employee);
+    public void Update(Employee employee) => _dbContext.StoreStaff.Update(employee);
 
-    public void Remove(Employee employee) => _dbContext.Staff.Remove(employee);
+    public void Remove(Employee employee) => _dbContext.StoreStaff.Remove(employee);
 
     public bool SaveChanges()
     {
