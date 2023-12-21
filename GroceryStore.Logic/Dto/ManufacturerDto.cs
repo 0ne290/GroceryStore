@@ -1,26 +1,26 @@
 namespace GroceryStore.Logic.Dto;
 
-public class ManufacturerDto
+public class ManufacturerDto : BaseDto
 {
-    public int Key { get; set; }
+    public ManufacturerDto(int key) : base(key) { }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = "NullName";
 
-    public string Contact { get; set; }
+    public string Contact { get; set; } = "NullContact";
 
-    public int CountryKey { get; set; }
+    public int CountryKey { get; set; } = -1;
 
-    public int RegionKey { get; set; }
+    public int RegionKey { get; set; } = -1;
 
-    public int CityKey { get; set; }
+    public int CityKey { get; set; } = -1;
 
-    public int StreetKey { get; set; }
+    public int StreetKey { get; set; } = -1;
 
-    public int Postcode { get; set; }
+    public int Postcode { get; set; } = -1;
 
-    public int HouseNumber { get; set; }
+    public int HouseNumber { get; set; } = -1;
 
-    public string HouseLetter { get; set; }
+    public string HouseLetter { get; set; } = "NullHouseLetter";
     
     //public ICountry? CountryKeyNavigation { get; set; }
     

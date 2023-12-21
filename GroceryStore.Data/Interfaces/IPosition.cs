@@ -6,5 +6,5 @@ public interface IPosition
 
     string? Name { get; }
 
-    ICollection<IEmployee> StoreStaff { get; } 
+    IEnumerable<IEmployee> StoreStaff { get; } 
 }

@@ -2,10 +2,12 @@ namespace GroceryStore.Data.Interfaces;
 
 public interface IEmployee
 {
-    int StoreKey { get; }
+    int Key { get; }
 
     string? FullName { get; }
-
+    
+    int? StoreKey { get; }
+    
     int? PositionKey { get; }
 
     DateTime? EmploymentDate { get; }

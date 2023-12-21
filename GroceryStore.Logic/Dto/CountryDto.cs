@@ -1,10 +1,10 @@
 namespace GroceryStore.Logic.Dto;
 
-public class CountryDto
+public class CountryDto : BaseDto
 {
-    public int Key { get; set; }
+    public CountryDto(int key) : base(key) { }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = "NullName";
 
     //public IEnumerable<IManufacturer> Manufacturers { get; set; } = new List<IManufacturer>();
 

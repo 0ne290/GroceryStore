@@ -2,6 +2,7 @@
 using GroceryStore.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace GroceryStore.Data;

@@ -28,7 +28,7 @@ public interface IStore
 
     IStreet? StreetKeyNavigation { get; }
 
-    ICollection<IEmployee> Staff { get; }
+    IEnumerable<IEmployee> Staff { get; }
 
-    ICollection<IProductInStore> Products { get; }
+    IEnumerable<IProductInStore> Products { get; }
 }

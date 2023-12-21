@@ -10,9 +10,9 @@ public interface IStreet
 
     ICity? CityKeyNavigation { get; }
 
-    ICollection<IStore> Stores { get; }
+    IEnumerable<IStore> Stores { get; }
 
-    ICollection<IManufacturer> Manufacturers { get; }
+    IEnumerable<IManufacturer> Manufacturers { get; }
 
-    ICollection<IWarehouse> Warehouses { get; }
+    IEnumerable<IWarehouse> Warehouses { get; }
 }

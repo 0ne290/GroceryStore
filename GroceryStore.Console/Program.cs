@@ -2,6 +2,7 @@
 using GroceryStore.Data.Dao;
 using GroceryStore.Logic;
 using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Services;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 

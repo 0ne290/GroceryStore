@@ -14,9 +14,9 @@ public sealed class Street : IStreet
 
     public ICity? CityKeyNavigation { get; set; }
 
-    public ICollection<IStore> Stores { get; set; } = new List<IStore>();
+    public IEnumerable<IStore> Stores { get; set; } = new List<IStore>();
 
-    public ICollection<IManufacturer> Manufacturers { get; set; } = new List<IManufacturer>();
+    public IEnumerable<IManufacturer> Manufacturers { get; set; } = new List<IManufacturer>();
 
-    public ICollection<IWarehouse> Warehouses { get; set; } = new List<IWarehouse>();
+    public IEnumerable<IWarehouse> Warehouses { get; set; } = new List<IWarehouse>();
 }

@@ -6,7 +6,7 @@ public class NullRegion : IRegion
 {
     public int Key => -1;
 
-    public string Name => "NullRegion";
+    public string Name => "NullName";
 
     public int? CountryKey => -1;
 

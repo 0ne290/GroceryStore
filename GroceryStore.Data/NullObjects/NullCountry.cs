@@ -6,7 +6,7 @@ public class NullCountry : ICountry
 {
     public int Key => -1;
 
-    public string Name => "NullCountry";
+    public string Name => "NullName";
 
     public IEnumerable<IManufacturer> Manufacturers => Enumerable.Empty<IManufacturer>();
 

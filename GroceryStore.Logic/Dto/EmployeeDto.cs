@@ -1,16 +1,16 @@
 namespace GroceryStore.Logic.Dto;
 
-public class EmployeeDto
+public class EmployeeDto : BaseDto
 {
-    public int Key { get; set; }
+    public EmployeeDto(int key) : base(key) { }
 
-    public string FullName { get; set; }
+    public string FullName { get; set; } = "NullFullName";
 
-    public int StoreKey { get; set; }
+    public int StoreKey { get; set; } = -1;
 
-    public int PositionKey { get; set; }
+    public int PositionKey { get; set; } = -1;
 
-    public DateTime EmploymentDate { get; set; }
+    public DateTime EmploymentDate { get; set; } = DateTime.UnixEpoch;
 
     //public IPosition? PositionKeyNavigation { get; set; }
 

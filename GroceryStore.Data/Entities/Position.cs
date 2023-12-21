@@ -10,5 +10,5 @@ public sealed class Position : IPosition
 
     public string? Name { get; set; }
 
-    public ICollection<IEmployee> StoreStaff { get; set; } = new List<IEmployee>();
+    public IEnumerable<IEmployee> StoreStaff { get; set; } = new List<IEmployee>();
 }

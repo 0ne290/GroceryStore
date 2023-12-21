@@ -30,5 +30,5 @@ public interface IManufacturer
 
     IStreet? StreetKeyNavigation { get; }
 
-    ICollection<IProduct> Products { get; }
+    IEnumerable<IProduct> Products { get; }
 }

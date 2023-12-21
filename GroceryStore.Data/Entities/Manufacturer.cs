@@ -34,5 +34,5 @@ public sealed class Manufacturer : IManufacturer
 
     public IStreet? StreetKeyNavigation { get; set; }
 
-    public ICollection<IProduct> Products { get; set; } = new List<IProduct>();
+    public IEnumerable<IProduct> Products { get; set; } = new List<IProduct>();
 }
