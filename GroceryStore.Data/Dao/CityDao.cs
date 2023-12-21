@@ -7,7 +7,7 @@ namespace GroceryStore.Data.Dao;
 
 public class CityDao
 {
-    public CityDao(IGroceryStoreContext dbContext) => _dbContext = dbContext;
+    public CityDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
 
     public void Create(City city) => _dbContext.Cities.Add(city);
 
@@ -41,5 +41,5 @@ public class CityDao
         return true;
     }
 
-    private readonly IGroceryStoreContext _dbContext;
+    private readonly GroceryStoreContext _dbContext;
 }

@@ -7,7 +7,7 @@ namespace GroceryStore.Data.Dao;
 
 public class CountryDao
 {
-    public CountryDao(IGroceryStoreContext dbContext) => _dbContext = dbContext;
+    public CountryDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
 
     public void Create(Country country) => _dbContext.Countries.Add(country);
 
@@ -41,5 +41,5 @@ public class CountryDao
         return true;
     }
 
-    private readonly IGroceryStoreContext _dbContext;
+    private readonly GroceryStoreContext _dbContext;
 }

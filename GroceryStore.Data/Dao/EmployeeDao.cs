@@ -7,7 +7,7 @@ namespace GroceryStore.Data.Dao;
 
 public class EmployeeDao
 {
-    public EmployeeDao(IGroceryStoreContext dbContext) => _dbContext = dbContext;
+    public EmployeeDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
 
     public void Create(Employee employee) => _dbContext.StoreStaff.Add(employee);
 
@@ -41,5 +41,5 @@ public class EmployeeDao
         return true;
     }
 
-    private readonly IGroceryStoreContext _dbContext;
+    private readonly GroceryStoreContext _dbContext;
 }

@@ -43,9 +43,16 @@ public class CityService
     
     public bool SaveChanges() => _cities.SaveChanges();
 
-    private static CityDto CityToCityDto(ICity city) => new CityDto(city.Key) { Name = city.Name ?? "NullName", RegionKey = city.RegionKey ?? -1 };
+    private static CityDto CityToCityDto(ICity city) => new CityDto(city.Key)
+    {
+        Name = city.Name ?? "NullName", RegionKey = city.RegionKey ?? -1
+    };
     
-    private static City CityDtoToCity(CityDto cityDto) => new City() { Key = cityDto.Key, Name = cityDto.Name == "NullName" ? null : cityDto.Name, RegionKey = cityDto.RegionKey == -1 ? null : cityDto.RegionKey };
+    private static City CityDtoToCity(CityDto cityDto) => new City()
+    {
+        Key = cityDto.Key, Name = cityDto.Name == "NullName" ? null : cityDto.Name,
+        RegionKey = cityDto.RegionKey == -1 ? null : cityDto.RegionKey
+    };
 
     private readonly CityDao _cities;
 }

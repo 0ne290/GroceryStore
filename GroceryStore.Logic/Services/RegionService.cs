@@ -43,9 +43,16 @@ public class RegionService
     
     public bool SaveChanges() => _regions.SaveChanges();
 
-    private static RegionDto RegionToRegionDto(IRegion region) => new RegionDto(region.Key) { Name = region.Name ?? "NullName", CountryKey = region.CountryKey ?? -1 };
+    private static RegionDto RegionToRegionDto(IRegion region) => new RegionDto(region.Key)
+    {
+        Name = region.Name ?? "NullName", CountryKey = region.CountryKey ?? -1
+    };
     
-    private static Region RegionDtoToRegion(RegionDto regionDto) => new Region() { Key = regionDto.Key, Name = regionDto.Name == "NullName" ? null : regionDto.Name, CountryKey = regionDto.CountryKey == -1 ? null : regionDto.CountryKey };
+    private static Region RegionDtoToRegion(RegionDto regionDto) => new Region()
+    {
+        Key = regionDto.Key, Name = regionDto.Name == "NullName" ? null : regionDto.Name,
+        CountryKey = regionDto.CountryKey == -1 ? null : regionDto.CountryKey
+    };
 
     private readonly RegionDao _regions;
 }

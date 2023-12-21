@@ -43,9 +43,19 @@ public class EmployeeService
     
     public bool SaveChanges() => _staff.SaveChanges();
 
-    private static EmployeeDto EmployeeToEmployeeDto(IEmployee employee) => new EmployeeDto(employee.Key) { FullName = employee.FullName ?? "NullFullName", StoreKey = employee.StoreKey ?? -1, PositionKey = employee.PositionKey ?? -1, EmploymentDate = employee.EmploymentDate ?? DateTime.UnixEpoch };
+    private static EmployeeDto EmployeeToEmployeeDto(IEmployee employee) => new EmployeeDto(employee.Key)
+    {
+        FullName = employee.FullName ?? "NullFullName", StoreKey = employee.StoreKey ?? -1,
+        PositionKey = employee.PositionKey ?? -1, EmploymentDate = employee.EmploymentDate ?? DateTime.UnixEpoch
+    };
     
-    private static Employee EmployeeDtoToEmployee(EmployeeDto employeeDto) => new Employee() { Key = employeeDto.Key, FullName = employeeDto.FullName == "NullFullName" ? null : employeeDto.FullName, StoreKey = employeeDto.StoreKey == -1 ? null : employeeDto.StoreKey, PositionKey = employeeDto.PositionKey == -1 ? null : employeeDto.PositionKey, EmploymentDate = employeeDto.EmploymentDate.Equals(DateTime.UnixEpoch) ? null : employeeDto.EmploymentDate };
+    private static Employee EmployeeDtoToEmployee(EmployeeDto employeeDto) => new Employee()
+    {
+        Key = employeeDto.Key, FullName = employeeDto.FullName == "NullFullName" ? null : employeeDto.FullName,
+        StoreKey = employeeDto.StoreKey == -1 ? null : employeeDto.StoreKey,
+        PositionKey = employeeDto.PositionKey == -1 ? null : employeeDto.PositionKey,
+        EmploymentDate = employeeDto.EmploymentDate.Equals(DateTime.UnixEpoch) ? null : employeeDto.EmploymentDate
+    };
 
     private readonly EmployeeDao _staff;
 }

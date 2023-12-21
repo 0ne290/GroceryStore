@@ -43,9 +43,15 @@ public class CountryService
     
     public bool SaveChanges() => _countries.SaveChanges();
 
-    private static CountryDto CountryToCountryDto(ICountry country) => new CountryDto(country.Key) { Name = country.Name ?? "NullName" };
+    private static CountryDto CountryToCountryDto(ICountry country) => new CountryDto(country.Key)
+    {
+        Name = country.Name ?? "NullName"
+    };
     
-    private static Country CountryDtoToCountry(CountryDto countryDto) => new Country() { Key = countryDto.Key, Name = countryDto.Name == "NullName" ? null : countryDto.Name };
+    private static Country CountryDtoToCountry(CountryDto countryDto) => new Country()
+    {
+        Key = countryDto.Key, Name = countryDto.Name == "NullName" ? null : countryDto.Name
+    };
 
     private readonly CountryDao _countries;
 }

@@ -1,10 +1,13 @@
 using GroceryStore.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GroceryStore.Data.Interfaces;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-public abstract class IGroceryStoreContext : DbContext
+namespace GroceryStore.Data;
+
+public abstract class GroceryStoreContext : DbContext
 {
+
     public DbSet<Country> Countries { get; set; }
     
     public DbSet<Region> Regions { get; set; }

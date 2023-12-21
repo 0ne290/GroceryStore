@@ -7,7 +7,7 @@ namespace GroceryStore.Data.Dao;
 
 public class RegionDao
 {
-    public RegionDao(IGroceryStoreContext dbContext) => _dbContext = dbContext;
+    public RegionDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
 
     public void Create(Region region) => _dbContext.Regions.Add(region);
 
@@ -41,5 +41,5 @@ public class RegionDao
         return true;
     }
 
-    private readonly IGroceryStoreContext _dbContext;
+    private readonly GroceryStoreContext _dbContext;
 }

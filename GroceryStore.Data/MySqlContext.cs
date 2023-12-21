@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data;
 
-public sealed class MySqlContext : IGroceryStoreContext
+public sealed class MySqlContext : GroceryStoreContext
 {
     public MySqlContext(string connectionString)
     {

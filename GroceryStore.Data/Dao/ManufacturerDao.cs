@@ -7,7 +7,7 @@ namespace GroceryStore.Data.Dao;
 
 public class ManufacturerDao
 {
-    public ManufacturerDao(IGroceryStoreContext dbContext) => _dbContext = dbContext;
+    public ManufacturerDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
 
     public void Create(Manufacturer manufacturer) => _dbContext.Manufacturers.Add(manufacturer);
 
@@ -41,5 +41,5 @@ public class ManufacturerDao
         return true;
     }
 
-    private readonly IGroceryStoreContext _dbContext;
+    private readonly GroceryStoreContext _dbContext;
 }
