@@ -12,9 +12,9 @@ public sealed class ProductInStore : IProductInStore
 
     public int? WarehouseKey { get; set; }
 
-    public IStore? StoreKeyNavigation { get; set; }
+    public IStore StoreKeyNavigation { get; set; } = null!;
 
-    public IProduct? ProductKeyNavigation { get; set; }
+    public IProduct ProductKeyNavigation { get; set; } = null!;
 
     public IWarehouse? WarehouseKeyNavigation { get; set; }
 }
