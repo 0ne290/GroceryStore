@@ -1,18 +1,16 @@
 namespace GroceryStore.Logic.Dto;
 
-public class RegionDto : BaseDto
+public class StreetDto : BaseDto
 {
-    public RegionDto(int key) : base(new [] { key }) { }
+    public StreetDto(int key) : base(new [] { key }) { }
     
     public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 
     public string Name { get; set; } = "NullName";
 
-    public int CountryKey { get; set; } = -1;
+    public int CityKey { get; set; } = -1;
 
-    //public IEnumerable<ICity> Cities { get; set; } = new List<ICity>();
-//
-    //public ICountry? CountryKeyNavigation { get; set; }
+    //public ICity? CityKeyNavigation { get; set; }
 //
     //public IEnumerable<IStore> Stores { get; set; } = new List<IStore>();
 //

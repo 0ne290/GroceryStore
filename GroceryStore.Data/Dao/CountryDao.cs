@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data.Dao;
 
-public class CountryDao
+public class CountryDao : BaseDao
 {
-    public CountryDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
+    public CountryDao(GroceryStoreContext dbContext) : base(dbContext) { }
 
-    public void Create(Country country) => _dbContext.Countries.Add(country);
+    public void Create(Country country) => DbContext.Countries.Add(country);
 
-    public IEnumerable<Country> GetAll() => _dbContext.Countries.AsNoTracking();
+    public IEnumerable<Country> GetAll() => DbContext.Countries.AsNoTracking();
 
     public ICountry GetByKey(int key)
     {
-        var country = _dbContext.Countries.Find(key);
+        var country = DbContext.Countries.Find(key);
         
         if (country is null)
             return new NullCountry();
@@ -23,23 +23,7 @@ public class CountryDao
         return country;
     }
 
-    public void Update(Country country) => _dbContext.Countries.Update(country);
+    public void Update(Country country) => DbContext.Countries.Update(country);
 
-    public void Remove(Country country) => _dbContext.Countries.Remove(country);
-
-    public bool SaveChanges()
-    {
-        try
-        {
-            _dbContext.SaveChanges();
-        }
-        catch
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private readonly GroceryStoreContext _dbContext;
+    public void Remove(Country country) => DbContext.Countries.Remove(country);
 }

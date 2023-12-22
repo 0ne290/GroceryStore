@@ -26,7 +26,7 @@ public interface IWarehouse
 
     IStreet? StreetKeyNavigation { get; }
 
-    ICollection<IProductInStore> ProductsInStores { get; }
+    IEnumerable<IProductInStore> ProductsInStores { get; }
 
-    ICollection<IProductInWarehouse> ProductsInWarehouses { get; }
+    IEnumerable<IProductInWarehouse> ProductsInWarehouses { get; }
 }

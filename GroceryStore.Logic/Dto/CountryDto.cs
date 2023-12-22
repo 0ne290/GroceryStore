@@ -2,7 +2,9 @@ namespace GroceryStore.Logic.Dto;
 
 public class CountryDto : BaseDto
 {
-    public CountryDto(int key) : base(key) { }
+    public CountryDto(int key) : base(new [] { key }) { }
+    
+    public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 
     public string Name { get; set; } = "NullName";
 

@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data.Dao;
 
-public class EmployeeDao
+public class EmployeeDao : BaseDao
 {
-    public EmployeeDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
+    public EmployeeDao(GroceryStoreContext dbContext) : base(dbContext) { }
 
-    public void Create(Employee employee) => _dbContext.StoreStaff.Add(employee);
+    public void Create(Employee employee) => DbContext.StoreStaff.Add(employee);
 
-    public IEnumerable<Employee> GetAll() => _dbContext.StoreStaff.AsNoTracking();
+    public IEnumerable<Employee> GetAll() => DbContext.StoreStaff.AsNoTracking();
 
     public IEmployee GetByKey(int key)
     {
-        var employee = _dbContext.StoreStaff.Find(key);
+        var employee = DbContext.StoreStaff.Find(key);
         
         if (employee is null)
             return new NullEmployee();
@@ -23,23 +23,7 @@ public class EmployeeDao
         return employee;
     }
 
-    public void Update(Employee employee) => _dbContext.StoreStaff.Update(employee);
+    public void Update(Employee employee) => DbContext.StoreStaff.Update(employee);
 
-    public void Remove(Employee employee) => _dbContext.StoreStaff.Remove(employee);
-
-    public bool SaveChanges()
-    {
-        try
-        {
-            _dbContext.SaveChanges();
-        }
-        catch
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private readonly GroceryStoreContext _dbContext;
+    public void Remove(Employee employee) => DbContext.StoreStaff.Remove(employee);
 }

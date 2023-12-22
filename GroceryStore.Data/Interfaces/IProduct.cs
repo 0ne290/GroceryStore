@@ -2,7 +2,7 @@ namespace GroceryStore.Data.Interfaces;
 
 public interface IProduct
 {
-    int? Key { get; }
+    int Key { get; }
 
     string? Name { get; }
 
@@ -14,9 +14,9 @@ public interface IProduct
 
     IManufacturer? ManufacturerKeyNavigation { get; }
 
-    ICollection<ISale> Sales { get; }
+    IEnumerable<ISale> Sales { get; }
 
-    ICollection<IProductInStore> ProductsInStores { get; }
+    IEnumerable<IProductInStore> ProductsInStores { get; }
 
-    ICollection<IProductInWarehouse> ProductsInWarehouses { get; }
+    IEnumerable<IProductInWarehouse> ProductsInWarehouses { get; }
 }

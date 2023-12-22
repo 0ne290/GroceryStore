@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data.Dao;
 
-public class ManufacturerDao
+public class ManufacturerDao : BaseDao
 {
-    public ManufacturerDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
+    public ManufacturerDao(GroceryStoreContext dbContext) : base(dbContext) { }
 
-    public void Create(Manufacturer manufacturer) => _dbContext.Manufacturers.Add(manufacturer);
+    public void Create(Manufacturer manufacturer) => DbContext.Manufacturers.Add(manufacturer);
 
-    public IEnumerable<Manufacturer> GetAll() => _dbContext.Manufacturers.AsNoTracking();
+    public IEnumerable<Manufacturer> GetAll() => DbContext.Manufacturers.AsNoTracking();
 
     public IManufacturer GetByKey(int key)
     {
-        var manufacturer = _dbContext.Manufacturers.Find(key);
+        var manufacturer = DbContext.Manufacturers.Find(key);
         
         if (manufacturer is null)
             return new NullManufacturer();
@@ -23,23 +23,7 @@ public class ManufacturerDao
         return manufacturer;
     }
 
-    public void Update(Manufacturer manufacturer) => _dbContext.Manufacturers.Update(manufacturer);
+    public void Update(Manufacturer manufacturer) => DbContext.Manufacturers.Update(manufacturer);
 
-    public void Remove(Manufacturer manufacturer) => _dbContext.Manufacturers.Remove(manufacturer);
-
-    public bool SaveChanges()
-    {
-        try
-        {
-            _dbContext.SaveChanges();
-        }
-        catch
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private readonly GroceryStoreContext _dbContext;
+    public void Remove(Manufacturer manufacturer) => DbContext.Manufacturers.Remove(manufacturer);
 }

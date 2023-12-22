@@ -10,9 +10,9 @@ public interface IProductInStore
 
     int? WarehouseKey { get; }
 
-    IStore StoreKeyNavigation { get; }
+    IStore? StoreKeyNavigation { get; }
 
-    IProduct ProductKeyNavigation { get; }
+    IProduct? ProductKeyNavigation { get; }
 
     IWarehouse? WarehouseKeyNavigation { get; }
 }

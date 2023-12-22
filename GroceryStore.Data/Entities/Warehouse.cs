@@ -30,7 +30,7 @@ public sealed class Warehouse : IWarehouse
 
     public IStreet? StreetKeyNavigation { get; set; }
 
-    public ICollection<IProductInStore> ProductsInStores { get; set; } = new List<IProductInStore>();
+    public IEnumerable<IProductInStore> ProductsInStores { get; set; } = new List<IProductInStore>();
 
-    public ICollection<IProductInWarehouse> ProductsInWarehouses { get; set; } = new List<IProductInWarehouse>();
+    public IEnumerable<IProductInWarehouse> ProductsInWarehouses { get; set; } = new List<IProductInWarehouse>();
 }

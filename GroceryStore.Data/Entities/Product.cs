@@ -6,7 +6,7 @@ namespace GroceryStore.Data.Entities;
 
 public sealed class Product : IProduct
 {
-    public int? Key { get; set; }
+    public int Key { get; set; }
 
     public string? Name { get; set; }
 
@@ -18,9 +18,9 @@ public sealed class Product : IProduct
 
     public IManufacturer? ManufacturerKeyNavigation { get; set; }
 
-    public ICollection<ISale> Sales { get; set; } = new List<ISale>();
+    public IEnumerable<ISale> Sales { get; set; } = new List<ISale>();
 
-    public ICollection<IProductInStore> ProductsInStores { get; set; } = new List<IProductInStore>();
+    public IEnumerable<IProductInStore> ProductsInStores { get; set; } = new List<IProductInStore>();
 
-    public ICollection<IProductInWarehouse> ProductsInWarehouses { get; set; } = new List<IProductInWarehouse>();
+    public IEnumerable<IProductInWarehouse> ProductsInWarehouses { get; set; } = new List<IProductInWarehouse>();
 }

@@ -5,17 +5,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data.Dao;
 
-public class RegionDao
+public class RegionDao : BaseDao
 {
-    public RegionDao(GroceryStoreContext dbContext) => _dbContext = dbContext;
+    public RegionDao(GroceryStoreContext dbContext) : base(dbContext) { }
 
-    public void Create(Region region) => _dbContext.Regions.Add(region);
+    public void Create(Region region) => DbContext.Regions.Add(region);
 
-    public IEnumerable<Region> GetAll() => _dbContext.Regions.AsNoTracking();
+    public IEnumerable<Region> GetAll() => DbContext.Regions.AsNoTracking();
 
     public IRegion GetByKey(int key)
     {
-        var region = _dbContext.Regions.Find(key);
+        var region = DbContext.Regions.Find(key);
         
         if (region is null)
             return new NullRegion();
@@ -23,23 +23,7 @@ public class RegionDao
         return region;
     }
 
-    public void Update(Region region) => _dbContext.Regions.Update(region);
+    public void Update(Region region) => DbContext.Regions.Update(region);
 
-    public void Remove(Region region) => _dbContext.Regions.Remove(region);
-
-    public bool SaveChanges()
-    {
-        try
-        {
-            _dbContext.SaveChanges();
-        }
-        catch
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    private readonly GroceryStoreContext _dbContext;
+    public void Remove(Region region) => DbContext.Regions.Remove(region);
 }

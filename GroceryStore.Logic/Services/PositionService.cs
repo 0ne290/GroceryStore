@@ -25,7 +25,7 @@ public class PositionService
     {
         var positions = _positions.GetAll();
 
-        return from position in positiond
+        return from position in positions
             select PositionToPositionDto(position);
     }
 
@@ -34,7 +34,7 @@ public class PositionService
         if (positionDto.IsEmpty())
             return false;
         
-        var position = PositionDtoToPositiin(positionDto);
+        var position = PositionDtoToPosition(positionDto);
         
         _positions.Update(position);
 

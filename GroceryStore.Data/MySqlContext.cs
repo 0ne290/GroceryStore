@@ -1,5 +1,4 @@
-﻿using GroceryStore.Data.Interfaces;
-using GroceryStore.Data.Entities;
+﻿using GroceryStore.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
