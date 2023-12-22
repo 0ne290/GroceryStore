@@ -10,5 +10,5 @@ public interface IRegularCustomer
 
     string? PhoneNumber { get; }
 
-    ICollection<ISale> Purchases { get; }
+    IEnumerable<ISale> Purchases { get; }
 }

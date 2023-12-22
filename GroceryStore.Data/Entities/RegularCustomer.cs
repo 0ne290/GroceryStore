@@ -14,5 +14,5 @@ public sealed class RegularCustomer : IRegularCustomer
 
     public string? PhoneNumber { get; set; }
 
-    public ICollection<ISale> Purchases { get; set; } = new List<ISale>();
+    public IEnumerable<ISale> Purchases { get; set; } = new List<ISale>();
 }
