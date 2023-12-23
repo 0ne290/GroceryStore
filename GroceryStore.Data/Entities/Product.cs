@@ -1,11 +1,15 @@
-﻿// ReSharper disable CollectionNeverUpdated.Global
+﻿namespace GroceryStore.Data.Entities;
 
-using GroceryStore.Data.Interfaces;
-
-namespace GroceryStore.Data.Entities;
-
-public sealed class Product : IProduct
+public sealed class Product
 {
+    public static Product Empty() => new Product()
+    {
+        Key = -1, Name = "NullName", DegreeOfProcessing = "NullDegreeOfProcessing", ManufacturerKey = -1,
+        BestBefore = -1, ManufacturerKeyNavigation = Manufacturer.Empty(), Sales = Enumerable.Empty<Sale>(),
+        ProductsInStores = Enumerable.Empty<ProductInStore>(),
+        ProductsInWarehouses = Enumerable.Empty<ProductInWarehouse>()
+    };
+    
     public int Key { get; set; }
 
     public string? Name { get; set; }
@@ -16,11 +20,11 @@ public sealed class Product : IProduct
 
     public int? BestBefore { get; set; }
 
-    public IManufacturer? ManufacturerKeyNavigation { get; set; }
+    public Manufacturer? ManufacturerKeyNavigation { get; set; }
 
-    public IEnumerable<ISale> Sales { get; set; } = new List<ISale>();
+    public IEnumerable<Sale> Sales { get; set; } = new List<Sale>();
 
-    public IEnumerable<IProductInStore> ProductsInStores { get; set; } = new List<IProductInStore>();
+    public IEnumerable<ProductInStore> ProductsInStores { get; set; } = new List<ProductInStore>();
 
-    public IEnumerable<IProductInWarehouse> ProductsInWarehouses { get; set; } = new List<IProductInWarehouse>();
+    public IEnumerable<ProductInWarehouse> ProductsInWarehouses { get; set; } = new List<ProductInWarehouse>();
 }

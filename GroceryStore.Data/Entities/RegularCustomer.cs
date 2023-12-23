@@ -1,11 +1,13 @@
-﻿// ReSharper disable CollectionNeverUpdated.Global
+﻿namespace GroceryStore.Data.Entities;
 
-using GroceryStore.Data.Interfaces;
-
-namespace GroceryStore.Data.Entities;
-
-public sealed class RegularCustomer : IRegularCustomer
+public sealed class RegularCustomer
 {
+    public static RegularCustomer Empty() => new RegularCustomer()
+    {
+        Key = -1, Name = "NullName", Address = "NullAddress", PhoneNumber = "NullPhoneNumber",
+        Purchases = Enumerable.Empty<Sale>()
+    };
+    
     public int Key { get; set; }
 
     public string? Name { get; set; }
@@ -14,5 +16,5 @@ public sealed class RegularCustomer : IRegularCustomer
 
     public string? PhoneNumber { get; set; }
 
-    public IEnumerable<ISale> Purchases { get; set; } = new List<ISale>();
+    public IEnumerable<Sale> Purchases { get; set; } = new List<Sale>();
 }

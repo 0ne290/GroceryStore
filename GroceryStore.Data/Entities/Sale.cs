@@ -1,9 +1,13 @@
-﻿using GroceryStore.Data.Interfaces;
+﻿namespace GroceryStore.Data.Entities;
 
-namespace GroceryStore.Data.Entities;
-
-public sealed class Sale : ISale
+public sealed class Sale
 {
+    public static Sale Empty() => new Sale()
+    {
+        ProductKey = -1, CustomerKey = -1, Date = DateTime.UnixEpoch, Quantity = -1,
+        CustomerKeyNavigation = RegularCustomer.Empty(), ProductKeyNavigation = Product.Empty()
+    };
+    
     public int ProductKey { get; set; }
 
     public int CustomerKey { get; set; }
@@ -12,7 +16,7 @@ public sealed class Sale : ISale
 
     public int? Quantity { get; set; }
 
-    public IRegularCustomer CustomerKeyNavigation { get; set; } = null!;
+    public RegularCustomer CustomerKeyNavigation { get; set; } = null!;
 
-    public IProduct ProductKeyNavigation { get; set; } = null!;
+    public Product ProductKeyNavigation { get; set; } = null!;
 }

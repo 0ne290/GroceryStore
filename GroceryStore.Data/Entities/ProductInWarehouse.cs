@@ -1,9 +1,13 @@
-﻿using GroceryStore.Data.Interfaces;
+﻿namespace GroceryStore.Data.Entities;
 
-namespace GroceryStore.Data.Entities;
-
-public sealed class ProductInWarehouse : IProductInWarehouse
+public sealed class ProductInWarehouse
 {
+    public static ProductInWarehouse Empty() => new ProductInWarehouse()
+    {
+        WarehouseKey = -1, ProductKey = -1, Quantity = -1, DateOfManufacture = DateTime.UnixEpoch,
+        WarehouseKeyNavigation = Warehouse.Empty(), ProductKeyNavigation = Product.Empty()
+    };
+    
     public int WarehouseKey { get; set; }
 
     public int ProductKey { get; set; }
@@ -12,7 +16,7 @@ public sealed class ProductInWarehouse : IProductInWarehouse
 
     public DateTime? DateOfManufacture { get; set; }
 
-    public IWarehouse WarehouseKeyNavigation { get; set; } = null!;
+    public Warehouse WarehouseKeyNavigation { get; set; } = null!;
 
-    public IProduct ProductKeyNavigation { get; set; } = null!;
+    public Product ProductKeyNavigation { get; set; } = null!;
 }

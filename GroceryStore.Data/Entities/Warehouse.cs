@@ -1,11 +1,16 @@
-﻿// ReSharper disable CollectionNeverUpdated.Global
+﻿namespace GroceryStore.Data.Entities;
 
-using GroceryStore.Data.Interfaces;
-
-namespace GroceryStore.Data.Entities;
-
-public sealed class Warehouse : IWarehouse
+public sealed class Warehouse
 {
+    public static Warehouse Empty() => new Warehouse()
+    {
+        Key = -1, EndOfLease = DateTime.UnixEpoch, Contact = "NullContact", RegionKey = -1, CityKey = -1, StreetKey = -1,
+        Postcode = -1, HouseNumber = -1, HouseLetter = "NullHouseLetter",  RegionKeyNavigation = Region.Empty(),
+        CityKeyNavigation = City.Empty(), StreetKeyNavigation = Street.Empty(),
+        ProductsInStores = Enumerable.Empty<ProductInStore>(),
+        ProductsInWarehouses = Enumerable.Empty<ProductInWarehouse>()
+    };
+    
     public int Key { get; set; }
 
     public DateTime? EndOfLease { get; set; }
@@ -24,13 +29,13 @@ public sealed class Warehouse : IWarehouse
 
     public string? HouseLetter { get; set; }
     
-    public IRegion? RegionKeyNavigation { get; set; }
+    public Region? RegionKeyNavigation { get; set; }
     
-    public ICity? CityKeyNavigation { get; set; }
+    public City? CityKeyNavigation { get; set; }
 
-    public IStreet? StreetKeyNavigation { get; set; }
+    public Street? StreetKeyNavigation { get; set; }
 
-    public IEnumerable<IProductInStore> ProductsInStores { get; set; } = new List<IProductInStore>();
+    public IEnumerable<ProductInStore> ProductsInStores { get; set; } = new List<ProductInStore>();
 
-    public IEnumerable<IProductInWarehouse> ProductsInWarehouses { get; set; } = new List<IProductInWarehouse>();
+    public IEnumerable<ProductInWarehouse> ProductsInWarehouses { get; set; } = new List<ProductInWarehouse>();
 }

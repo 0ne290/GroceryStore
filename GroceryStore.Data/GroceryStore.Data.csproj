@@ -14,4 +14,8 @@
       <Folder Include="Entities\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\GroceryStore.Logic\GroceryStore.Logic.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -1,9 +1,13 @@
-﻿using GroceryStore.Data.Interfaces;
+﻿namespace GroceryStore.Data.Entities;
 
-namespace GroceryStore.Data.Entities;
-
-public sealed class Employee : IEmployee
+public sealed class Employee
 {
+    public static Employee Empty() => new Employee()
+    {
+        Key = -1, FullName = "NullFullName", StoreKey = -1, PositionKey = -1, EmploymentDate = DateTime.UnixEpoch,
+        PositionKeyNavigation = Position.Empty(), StoreKeyNavigation = Store.Empty()
+    };
+    
     public int Key { get; set; }
 
     public string? FullName { get; set; }
@@ -14,7 +18,7 @@ public sealed class Employee : IEmployee
 
     public DateTime? EmploymentDate { get; set; }
 
-    public IPosition? PositionKeyNavigation { get; set; }
+    public Position? PositionKeyNavigation { get; set; }
 
-    public IStore? StoreKeyNavigation { get; set; }
+    public Store? StoreKeyNavigation { get; set; }
 }
