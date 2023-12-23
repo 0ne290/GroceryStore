@@ -2,7 +2,7 @@ using GroceryStore.Data.Interfaces;
 
 namespace GroceryStore.Data.NullObjects;
 
-public class NullSald : ISale
+public class NullSale : ISale
 {
     public int ProductKey => -1;
 
