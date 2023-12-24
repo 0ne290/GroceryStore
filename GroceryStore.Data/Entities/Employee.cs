@@ -1,13 +1,9 @@
-﻿namespace GroceryStore.Data.Entities;
+﻿using GroceryStore.Data.Interfaces;
 
-public sealed class Employee
+namespace GroceryStore.Data.Entities;
+
+public sealed class Employee : IEntity
 {
-    public static Employee Empty() => new Employee()
-    {
-        Key = -1, FullName = "NullFullName", StoreKey = -1, PositionKey = -1, EmploymentDate = DateTime.UnixEpoch,
-        PositionKeyNavigation = Position.Empty(), StoreKeyNavigation = Store.Empty()
-    };
-    
     public int Key { get; set; }
 
     public string? FullName { get; set; }

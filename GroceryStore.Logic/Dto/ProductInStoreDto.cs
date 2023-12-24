@@ -2,7 +2,7 @@ namespace GroceryStore.Logic.Dto;
 
 public class ProductInStoreDto : BaseDto
 {
-    public ProductInStoreDto(int storeKey, int productKey) : base(new[] { storeKey, productKey }) { }
+    public ProductInStoreDto(int storeKey = -1, int productKey = -1) : base(new[] { storeKey, productKey }) { }
     
     public int StoreKey { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 

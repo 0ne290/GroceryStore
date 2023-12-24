@@ -1,13 +1,9 @@
-﻿namespace GroceryStore.Data.Entities;
+﻿using GroceryStore.Data.Interfaces;
 
-public sealed class Country
+namespace GroceryStore.Data.Entities;
+
+public sealed class Country : IEntity
 {
-    public static Country Empty() => new Country()
-    {
-        Key = -1, Name = "NullName", Manufacturers = Enumerable.Empty<Manufacturer>(),
-        Regions = Enumerable.Empty<Region>()
-    };
-    
     public int Key { get; set; }
 
     public string? Name { get; set; }

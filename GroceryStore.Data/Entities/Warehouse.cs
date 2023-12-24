@@ -1,16 +1,9 @@
-﻿namespace GroceryStore.Data.Entities;
+﻿using GroceryStore.Data.Interfaces;
 
-public sealed class Warehouse
+namespace GroceryStore.Data.Entities;
+
+public sealed class Warehouse : IEntity
 {
-    public static Warehouse Empty() => new Warehouse()
-    {
-        Key = -1, EndOfLease = DateTime.UnixEpoch, Contact = "NullContact", RegionKey = -1, CityKey = -1, StreetKey = -1,
-        Postcode = -1, HouseNumber = -1, HouseLetter = "NullHouseLetter",  RegionKeyNavigation = Region.Empty(),
-        CityKeyNavigation = City.Empty(), StreetKeyNavigation = Street.Empty(),
-        ProductsInStores = Enumerable.Empty<ProductInStore>(),
-        ProductsInWarehouses = Enumerable.Empty<ProductInWarehouse>()
-    };
-    
     public int Key { get; set; }
 
     public DateTime? EndOfLease { get; set; }

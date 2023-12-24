@@ -2,11 +2,11 @@ namespace GroceryStore.Logic.Dto;
 
 public class StoreDto : BaseDto
 {
-    public StoreDto(int key) : base(new [] { key }) { }
+    public StoreDto(int key = -1) : base(new [] { key }) { }
     
     public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 
-    public DateTime EndOfLease { get; set; } = DateTime.UnixEpoch;
+    public DateTime EndOfLease { get; set; }
 
     public string Contact { get; set; } = "NullContact";
 

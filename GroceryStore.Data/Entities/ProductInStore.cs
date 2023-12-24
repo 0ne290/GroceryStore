@@ -1,13 +1,9 @@
-﻿namespace GroceryStore.Data.Entities;
+﻿using GroceryStore.Data.Interfaces;
 
-public sealed class ProductInStore
+namespace GroceryStore.Data.Entities;
+
+public sealed class ProductInStore : IEntity
 {
-    public static ProductInStore Empty() => new ProductInStore()
-    {
-        StoreKey = -1, ProductKey = -1, Quantity = -1, WarehouseKey = -1, StoreKeyNavigation = Store.Empty(),
-        ProductKeyNavigation = Product.Empty(), WarehouseKeyNavigation = Warehouse.Empty()
-    };
-    
     public int StoreKey { get; set; }
 
     public int ProductKey { get; set; }

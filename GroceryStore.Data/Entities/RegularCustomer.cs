@@ -1,13 +1,9 @@
-﻿namespace GroceryStore.Data.Entities;
+﻿using GroceryStore.Data.Interfaces;
 
-public sealed class RegularCustomer
+namespace GroceryStore.Data.Entities;
+
+public sealed class RegularCustomer : IEntity
 {
-    public static RegularCustomer Empty() => new RegularCustomer()
-    {
-        Key = -1, Name = "NullName", Address = "NullAddress", PhoneNumber = "NullPhoneNumber",
-        Purchases = Enumerable.Empty<Sale>()
-    };
-    
     public int Key { get; set; }
 
     public string? Name { get; set; }

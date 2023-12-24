@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\GroceryStore.Data\GroceryStore.Data.csproj" />
       <ProjectReference Include="..\GroceryStore.Logic\GroceryStore.Logic.csproj" />
     </ItemGroup>
 

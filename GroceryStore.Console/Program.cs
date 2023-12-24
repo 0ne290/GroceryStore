@@ -1,8 +1,8 @@
 ﻿using GroceryStore.Data;
-using GroceryStore.Data.Dao;
-using GroceryStore.Logic;
+using GroceryStore.Data.Entities;
 using GroceryStore.Logic.Dto;
 using GroceryStore.Logic.Services;
+using Microsoft.EntityFrameworkCore;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
@@ -32,9 +32,16 @@ internal static class Program
 
     private static void CompositionRoot(string connectionString)
     {
+        var optionsBuilder = new DbContextOptionsBuilder<GroceryStoreContext>();
+ 
+        var options = optionsBuilder
+            .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+            .Options;
+        
         _cityService = new CityService(
-            new CityDao(
-                new MySqlContext(connectionString)));
+            new Dao<City, CityDto>(
+                new GroceryStoreContext(options),
+                new Mapper()));
     }
 
     private static CityService _cityService;

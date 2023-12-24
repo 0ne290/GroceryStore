@@ -1,13 +1,9 @@
-﻿namespace GroceryStore.Data.Entities;
+﻿using GroceryStore.Data.Interfaces;
 
-public sealed class Sale
+namespace GroceryStore.Data.Entities;
+
+public sealed class Sale : IEntity
 {
-    public static Sale Empty() => new Sale()
-    {
-        ProductKey = -1, CustomerKey = -1, Date = DateTime.UnixEpoch, Quantity = -1,
-        CustomerKeyNavigation = RegularCustomer.Empty(), ProductKeyNavigation = Product.Empty()
-    };
-    
     public int ProductKey { get; set; }
 
     public int CustomerKey { get; set; }
