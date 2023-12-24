@@ -2,7 +2,11 @@ namespace GroceryStore.Data.Dao;
 
 public abstract class BaseDao
 {
-    protected BaseDao(GroceryStoreContext dbContext) => DbContext = dbContext;
+    protected BaseDao(GroceryStoreContext dbContext, Mapper mapper)
+    {
+        DbContext = dbContext;
+        Mapper = mapper;
+    }
     
     public bool SaveChanges()
     {
@@ -19,4 +23,5 @@ public abstract class BaseDao
     }
 
     protected readonly GroceryStoreContext DbContext;
+    protected readonly Mapper Mapper;
 }

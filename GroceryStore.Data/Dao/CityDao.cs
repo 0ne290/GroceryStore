@@ -1,24 +1,41 @@
 using GroceryStore.Data.Entities;
 using GroceryStore.Data.Interfaces;
-using GroceryStore.Data.NullObjects;
+using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data.Dao;
 
-public class CityDao : BaseDao
+public class CityDao<Entity, Dto> : BaseDao where Dto : IDto where Entity : class, IEntity
 {
-    public CityDao(GroceryStoreContext dbContext) : base(dbContext) { }
+    public CityDao(GroceryStoreContext dbContext, Mapper mapper) : base(dbContext, mapper) { }
 
-    public void Create(City city) => DbContext.Cities.Add(city);
-
-    public IEnumerable<City> GetAll() => DbContext.Cities.AsNoTracking();
-
-    public ICity GetByKey(int key)
+    public bool Create(Dto dto)
     {
-        var city = DbContext.Cities.Find(key);
+        if (dto.IsEmpty())
+            return false;
+        
+        var entity = (Entity)Mapper.DtoToEntity(dto);
+
+        DbContext.Set<Entity>().Add(entity);
+
+        return true;
+    }
+
+    public IEnumerable<Dto> GetAll()
+    {
+        var entities = DbContext.Set<Entity>().AsNoTracking().AsEnumerable();
+
+        return from entity in entities
+            select (Dto)Mapper.EntityToDto(entity);
+    }
+
+    public Dto GetByKey(object[] key)
+    {
+        var city = DbContext.Set<Entity>().Find(key);
         
         if (city is null)
-            return new NullCity();
+            return Dto.Empty();
 
         return city;
     }
