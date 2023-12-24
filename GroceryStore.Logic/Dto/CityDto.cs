@@ -4,10 +4,11 @@ public class CityDto : BaseDto
 {
     public CityDto(int key) : base(new [] { key }) { }
     
-    public CityDto Empty() => new CityDto(-1)
+    public CityDto() : base(new[] { -1 })
     {
-        Name = "NullName", RegionKey = -1
-    };
+        Name = "NullName";
+        RegionKey = -1;
+    }
     
     public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
     
