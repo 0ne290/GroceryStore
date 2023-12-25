@@ -18,16 +18,22 @@ internal static class Program
         
         CompositionRoot(connectionString);
 
-        var cityDto = new CityDto() { Key = 81, Name = "Zoldercommands", RegionKey = -1 };
-
-        _cityService.UpdateCity(cityDto);
+        //var cityDto = new CityDto() { Key = 18, Name = "Abobus", RegionKey = -1 };
+//
+        //_cityService.UpdateCity(cityDto);
+        //
+        //System.Console.WriteLine(_cityService.SaveChanges());
         
-        _cityService.SaveChanges();
+        var countryDto = new CountryDto() { Key = 11, Name = "Russia" };
 
-        var cities = _cityService.GetCities();
+        _countryService.AddCountry(countryDto);
+        
+        System.Console.WriteLine(_countryService.SaveChanges());
 
-        foreach (var city in cities)
-            System.Console.WriteLine($"Key = {city.Key}; Name = {city.Name}; RegionKey = {city.RegionKey}");
+        var countries = _countryService.GetCountries();
+
+        foreach (var country in countries)
+            System.Console.WriteLine($"Key = {country.Key}; Name = {country.Name}");
     }
 
     private static void CompositionRoot(string connectionString)
@@ -42,7 +48,14 @@ internal static class Program
             new Dao<City, CityDto>(
                 new GroceryStoreContext(options),
                 new Mapper()));
+        
+        _countryService = new CountryService(
+            new Dao<Country, CountryDto>(
+                new GroceryStoreContext(options),
+                new Mapper()));
     }
 
     private static CityService _cityService;
+    
+    private static CountryService _countryService;
 }

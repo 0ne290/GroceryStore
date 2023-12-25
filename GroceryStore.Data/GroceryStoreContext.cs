@@ -24,7 +24,7 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.RegionKey).HasColumnName("Код региона");
             entity.Property(e => e.Name).HasMaxLength(255);
             
-            entity.HasOne(d => (Region)d.RegionKeyNavigation).WithMany(p => (IEnumerable<City>)p.Cities)
+            entity.HasOne(d => d.RegionKeyNavigation).WithMany(p => p.Cities)
                 .HasForeignKey(d => d.RegionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("РегионыГорода");
@@ -57,17 +57,17 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.HouseLetter).HasMaxLength(255);
             entity.Property(e => e.HouseNumber).HasColumnName("Номер дома");
 
-            entity.HasOne(d => (City)d.CityKeyNavigation).WithMany(p => (IEnumerable<Store>)p.Stores)
+            entity.HasOne(d => d.CityKeyNavigation).WithMany(p => p.Stores)
                 .HasForeignKey(d => d.CityKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ГородаМагазины");
 
-            entity.HasOne(d => (Region)d.RegionKeyNavigation).WithMany(p => (IEnumerable<Store>)p.Stores)
+            entity.HasOne(d => d.RegionKeyNavigation).WithMany(p => p.Stores)
                 .HasForeignKey(d => d.RegionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("РегионыМагазины");
 
-            entity.HasOne(d => (Street)d.StreetKeyNavigation).WithMany(p => (IEnumerable<Store>)p.Stores)
+            entity.HasOne(d => d.StreetKeyNavigation).WithMany(p => p.Stores)
                 .HasForeignKey(d => d.StreetKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("УлицыМагазины");
@@ -87,12 +87,12 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.PositionKey).HasColumnName("Код должности");
             entity.Property(e => e.StoreKey).HasColumnName("Код магазина");
 
-            entity.HasOne(d => (Position)d.PositionKeyNavigation).WithMany(p => (IEnumerable<Employee>)p.StoreStaff)
+            entity.HasOne(d => d.PositionKeyNavigation).WithMany(p => p.StoreStaff)
                 .HasForeignKey(d => d.PositionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ДолжностиПерсонал магазинов");
 
-            entity.HasOne(d => (Store)d.StoreKeyNavigation).WithMany(p => (IEnumerable<Employee>)p.Staff)
+            entity.HasOne(d => d.StoreKeyNavigation).WithMany(p => p.Staff)
                 .HasForeignKey(d => d.StoreKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("МагазиныПерсонал магазинов");
@@ -121,11 +121,11 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.ProductKey).HasColumnName("Код_товара");
             entity.Property(e => e.CustomerKey).HasColumnName("Код клиента");
 
-            entity.HasOne(d => (RegularCustomer)d.CustomerKeyNavigation).WithMany(p => (IEnumerable<Sale>)p.Purchases)
+            entity.HasOne(d => d.CustomerKeyNavigation).WithMany(p => p.Purchases)
                 .HasForeignKey(d => d.CustomerKey)
                 .HasConstraintName("Постоянные клиентыПродажа");
 
-            entity.HasOne(d => (Product)d.ProductKeyNavigation).WithMany(p => (IEnumerable<Sale>)p.Sales)
+            entity.HasOne(d => d.ProductKeyNavigation).WithMany(p => p.Sales)
                 .HasForeignKey(d => d.ProductKey)
                 .HasConstraintName("ТоварыПродажа");
         });
@@ -146,22 +146,22 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(255);
             entity.Property(e => e.HouseNumber).HasColumnName("Номер_дома");
 
-            entity.HasOne(d => (City)d.CityKeyNavigation).WithMany(p => (IEnumerable<Manufacturer>)p.Manufacturers)
+            entity.HasOne(d => d.CityKeyNavigation).WithMany(p => p.Manufacturers)
                 .HasForeignKey(d => d.CityKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ГородаПроизводитель");
 
-            entity.HasOne(d => (Region)d.RegionKeyNavigation).WithMany(p => (IEnumerable<Manufacturer>)p.Manufacturers)
+            entity.HasOne(d => d.RegionKeyNavigation).WithMany(p => p.Manufacturers)
                 .HasForeignKey(d => d.RegionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("РегионыПроизводитель");
 
-            entity.HasOne(d => (Country)d.CountryKeyNavigation).WithMany(p => (IEnumerable<Manufacturer>)p.Manufacturers)
+            entity.HasOne(d => d.CountryKeyNavigation).WithMany(p => p.Manufacturers)
                 .HasForeignKey(d => d.CountryKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("СтраныПроизводитель");
 
-            entity.HasOne(d => (Street)d.StreetKeyNavigation).WithMany(p => (IEnumerable<Manufacturer>)p.Manufacturers)
+            entity.HasOne(d => d.StreetKeyNavigation).WithMany(p => p.Manufacturers)
                 .HasForeignKey(d => d.StreetKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("УлицыПроизводитель");
@@ -179,7 +179,7 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.CountryKey).HasColumnName("Код страны");
             entity.Property(e => e.Name).HasMaxLength(255);
 
-            entity.HasOne(d => (Country)d.CountryKeyNavigation).WithMany(p => (IEnumerable<Region>)p.Regions)
+            entity.HasOne(d => d.CountryKeyNavigation).WithMany(p => p.Regions)
                 .HasForeignKey(d => d.CountryKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("СтраныРегионы");
@@ -200,17 +200,17 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.HouseLetter).HasMaxLength(255);
             entity.Property(e => e.HouseNumber).HasColumnName("Номер дома");
 
-            entity.HasOne(d => (City)d.CityKeyNavigation).WithMany(p => (IEnumerable<Warehouse>)p.Warehouses)
+            entity.HasOne(d => d.CityKeyNavigation).WithMany(p => p.Warehouses)
                 .HasForeignKey(d => d.CityKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ГородаСклады");
 
-            entity.HasOne(d => (Region)d.RegionKeyNavigation).WithMany(p => (IEnumerable<Warehouse>)p.Warehouses)
+            entity.HasOne(d => d.RegionKeyNavigation).WithMany(p => p.Warehouses)
                 .HasForeignKey(d => d.RegionKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("РегионыСклады");
 
-            entity.HasOne(d => (Street)d.StreetKeyNavigation).WithMany(p => (IEnumerable<Warehouse>)p.Warehouses)
+            entity.HasOne(d => d.StreetKeyNavigation).WithMany(p => p.Warehouses)
                 .HasForeignKey(d => d.StreetKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("УлицыСклады");
@@ -243,7 +243,7 @@ public sealed class GroceryStoreContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("Степень обработки");
 
-            entity.HasOne(d => (Manufacturer)d.ManufacturerKeyNavigation).WithMany(p => (IEnumerable<Product>)p.Products)
+            entity.HasOne(d => d.ManufacturerKeyNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.ManufacturerKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ПроизводительТовары");
@@ -260,15 +260,15 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.Quantity).HasColumnName("Кол-во");
             entity.Property(e => e.WarehouseKey).HasColumnName("Привезено со склада");
 
-            entity.HasOne(d => (Store)d.StoreKeyNavigation).WithMany(p => (IEnumerable<ProductInStore>)p.Products)
+            entity.HasOne(d => d.StoreKeyNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.StoreKey)
                 .HasConstraintName("МагазиныТовары в магазинах");
 
-            entity.HasOne(d => (Product)d.ProductKeyNavigation).WithMany(p => (IEnumerable<ProductInStore>)p.ProductsInStores)
+            entity.HasOne(d => d.ProductKeyNavigation).WithMany(p => p.ProductsInStores)
                 .HasForeignKey(d => d.ProductKey)
                 .HasConstraintName("ТоварыТовары в магазинах");
 
-            entity.HasOne(d => (Warehouse)d.WarehouseKeyNavigation).WithMany(p => (IEnumerable<ProductInStore>)p.ProductsInStores)
+            entity.HasOne(d => d.WarehouseKeyNavigation).WithMany(p => p.ProductsInStores)
                 .HasForeignKey(d => d.WarehouseKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("СкладыТовары в магазинах");
@@ -285,11 +285,11 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.DateOfManufacture).HasColumnName("Дата производства");
             entity.Property(e => e.Quantity).HasColumnName("Кол-во");
 
-            entity.HasOne(d => (Warehouse)d.WarehouseKeyNavigation).WithMany(p => (IEnumerable<ProductInWarehouse>)p.ProductsInWarehouses)
+            entity.HasOne(d => d.WarehouseKeyNavigation).WithMany(p => p.ProductsInWarehouses)
                 .HasForeignKey(d => d.WarehouseKey)
                 .HasConstraintName("СкладыТовары на складах");
 
-            entity.HasOne(d => (Product)d.ProductKeyNavigation).WithMany(p => (IEnumerable<ProductInWarehouse>)p.ProductsInWarehouses)
+            entity.HasOne(d => d.ProductKeyNavigation).WithMany(p => p.ProductsInWarehouses)
                 .HasForeignKey(d => d.ProductKey)
                 .HasConstraintName("ТоварыТовары на складах");
         });
@@ -306,7 +306,7 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.CityKey).HasColumnName("Код города");
             entity.Property(e => e.Name).HasMaxLength(255);
 
-            entity.HasOne(d => (City)d.CityKeyNavigation).WithMany(p => (IEnumerable<Street>)p.Streets)
+            entity.HasOne(d => d.CityKeyNavigation).WithMany(p => p.Streets)
                 .HasForeignKey(d => d.CityKey)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ГородаУлицы");

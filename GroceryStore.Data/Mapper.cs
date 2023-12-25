@@ -7,13 +7,12 @@ namespace GroceryStore.Data;
 
 public class Mapper
 {
-    public IEntity DtoToEntity(IDto dto)
+    public IEntity DtoToEntity(IDto dto) => dto switch
     {
-        if (dto is CityDto cityDto)
-            return CityDtoToCity(cityDto);
-        
-        throw new ArgumentException($"There is no corresponding entity in the database for the DTO class \"{dto}\"");
-    }
+        CityDto cityDto => CityDtoToCity(cityDto),
+        CountryDto countryDto => CountryDtoToCountry(countryDto),
+        _ => throw new ArgumentException($"There is no corresponding entity in the database for the DTO class \"{dto}\"")
+    };
     
     private City CityDtoToCity(CityDto cityDto) => new City()
     {
@@ -21,16 +20,25 @@ public class Mapper
         RegionKey = cityDto.RegionKey == -1 ? null : cityDto.RegionKey
     };
     
-    public IDto EntityToDto(IEntity entity)
+    private Country CountryDtoToCountry(CountryDto countryDto) => new Country()
     {
-        if (entity is City city)
-            return CityToCityDto(city);
-        
-        throw new ArgumentException($"There is no corresponding DTO class for the entity \"{entity}\"");
-    }
+        Key = countryDto.Key, Name = countryDto.Name == "NullName" ? null : countryDto.Name
+    };
+    
+    public IDto EntityToDto(IEntity entity) => entity switch
+    {
+        City city => CityToCityDto(city),
+        Country country => CountryToCountryDto(country),
+        _ => throw new ArgumentException($"There is no corresponding DTO class for the entity \"{entity}\"")
+    };
     
     private CityDto CityToCityDto(City city) => new CityDto(city.Key)
     {
         Name = city.Name ?? "NullName", RegionKey = city.RegionKey ?? -1
+    };
+    
+    private CountryDto CountryToCountryDto(Country country) => new CountryDto(country.Key)
+    {
+        Name = country.Name ?? "NullName"
     };
 }

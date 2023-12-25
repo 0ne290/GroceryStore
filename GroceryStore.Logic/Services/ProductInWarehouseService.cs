@@ -1,60 +1,19 @@
-using GroceryStore.Data.Dao;
-using GroceryStore.Data.Entities;
-using GroceryStore.Data.Interfaces;
 using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Logic.Services;
 
 public class ProductInWarehouseService
 {
-    public ProductInWarehouseService(ProductInWarehouseDao productsInWarehouse) => _productsInWarehouse = productsInWarehouse;
+    public ProductInWarehouseService(IDao<ProductInWarehouseDto> productsInWarehouse) => _productsInWarehouse = productsInWarehouse;
 
-    public bool AddProductInWarehouse(ProductInWarehouseDto productInWarehouseDto)
-    {
-        if (productInWarehouseDto.IsEmpty())
-            return false;
-        
-        var productInWarehouse = ProductInWarehouseDtoToProductInWarehouse(productInWarehouseDto);
+    public bool AddProductInWarehouse(ProductInWarehouseDto productInWarehouseDto) => _productsInWarehouse.Create(productInWarehouseDto);
 
-        _productsInWarehouse.Create(productInWarehouse);
+    public IEnumerable<ProductInWarehouseDto> GetCountries() => _productsInWarehouse.GetAll();
 
-        return true;
-    }
-
-    public IEnumerable<ProductInWarehouseDto> GetProductsInStore()
-    {
-        var productsInWarehouse = _productsInWarehouse.GetAll();
-
-        return from productInWarehouse in productsInWarehouse
-            select ProductInWarehouseToProductInWarehouseDto(productInWarehouse);
-    }
-
-    public bool UpdateProductInWarehouse(ProductInWarehouseDto productInWarehouseDto)
-    {
-        if (productInWarehouseDto.IsEmpty())
-            return false;
-        
-        var productInWarehouse = ProductInWarehouseDtoToProductInWarehouse(productInWarehouseDto);
-        
-        _productsInWarehouse.Update(productInWarehouse);
-
-        return true;
-    }
+    public void UpdateCity(ProductInWarehouseDto productInWarehouseDto) => _productsInWarehouse.Update(productInWarehouseDto);
     
     public bool SaveChanges() => _productsInWarehouse.SaveChanges();
 
-    private static ProductInWarehouseDto ProductInWarehouseToProductInWarehouseDto(IProductInWarehouse productInWarehouse) => new ProductInWarehouseDto(productInWarehouse.WarehouseKey, productInWarehouse.ProductKey)
-    {
-        Quantity = productInWarehouse.Quantity ?? -1,
-        DateOfManufacture = productInWarehouse.DateOfManufacture ?? DateTime.UnixEpoch
-    };
-    
-    private static ProductInWarehouse ProductInWarehouseDtoToProductInWarehouse(ProductInWarehouseDto productInWarehouseDto) => new ProductInWarehouse()
-    {
-        WarehouseKey = productInWarehouseDto.WarehouseKey, ProductKey = productInWarehouseDto.ProductKey,
-        Quantity = productInWarehouseDto.Quantity == -1 ? null : productInWarehouseDto.Quantity,
-        DateOfManufacture = productInWarehouseDto.DateOfManufacture.Equals(DateTime.UnixEpoch) ? null : productInWarehouseDto.DateOfManufacture
-    };
-
-    private readonly ProductInWarehouseDao _productsInWarehouse;
+    private readonly IDao<ProductInWarehouseDto> _productsInWarehouse;
 }

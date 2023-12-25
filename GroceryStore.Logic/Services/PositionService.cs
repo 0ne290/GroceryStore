@@ -1,57 +1,19 @@
-﻿using GroceryStore.Data.Dao;
-using GroceryStore.Data.Entities;
-using GroceryStore.Data.Interfaces;
-using GroceryStore.Logic.Dto;
+﻿using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Logic.Services;
 
 public class PositionService
 {
-    public PositionService(PositionDao positions) => _positions = positions;
+    public PositionService(IDao<PositionDto> positions) => _positions = positions;
 
-    public bool AddPosition(PositionDto positionDto)
-    {
-        if (positionDto.IsEmpty())
-            return false;
-        
-        var position = PositionDtoToPosition(positionDto);
+    public bool AddPosition(PositionDto positionDto) => _positions.Create(positionDto);
 
-        _positions.Create(position);
+    public IEnumerable<PositionDto> GetCountries() => _positions.GetAll();
 
-        return true;
-    }
-
-    public IEnumerable<PositionDto> GetPositions()
-    {
-        var positions = _positions.GetAll();
-
-        return from position in positions
-            select PositionToPositionDto(position);
-    }
-
-    public bool UpdatePosition(PositionDto positionDto)
-    {
-        if (positionDto.IsEmpty())
-            return false;
-        
-        var position = PositionDtoToPosition(positionDto);
-        
-        _positions.Update(position);
-
-        return true;
-    }
+    public void UpdateCity(PositionDto positionDto) => _positions.Update(positionDto);
     
     public bool SaveChanges() => _positions.SaveChanges();
 
-    private static PositionDto PositionToPositionDto(IPosition position) => new PositionDto(position.Key)
-    {
-        Name = position.Name ?? "NullName"
-    };
-    
-    private static Position PositionDtoToPosition(PositionDto positionDto) => new Position()
-    {
-        Key = positionDto.Key, Name = positionDto.Name == "NullName" ? null : positionDto.Name
-    };
-
-    private readonly PositionDao _positions;
+    private readonly IDao<PositionDto> _positions;
 }
