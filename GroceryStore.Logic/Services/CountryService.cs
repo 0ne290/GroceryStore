@@ -11,7 +11,7 @@ public class CountryService
 
     public IEnumerable<CountryDto> GetCountries() => _countries.GetAll();
 
-    public void UpdateCity(CountryDto countryDto) => _countries.Update(countryDto);
+    public void UpdateCountry(CountryDto countryDto) => _countries.Update(countryDto);
     
     public bool SaveChanges() => _countries.SaveChanges();
 

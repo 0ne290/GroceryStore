@@ -9,9 +9,9 @@ public class EmployeeService
 
     public bool AddEmployee(EmployeeDto employeeDto) => _staff.Create(employeeDto);
 
-    public IEnumerable<EmployeeDto> GetCountries() => _staff.GetAll();
+    public IEnumerable<EmployeeDto> GetStaff() => _staff.GetAll();
 
-    public void UpdateCity(EmployeeDto employeeDto) => _staff.Update(employeeDto);
+    public void UpdateEmployee(EmployeeDto employeeDto) => _staff.Update(employeeDto);
     
     public bool SaveChanges() => _staff.SaveChanges();
 
