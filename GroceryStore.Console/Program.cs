@@ -44,7 +44,7 @@ internal static class Program
             .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             .Options;
 
-        Services.AddService<CityDto>(new Service<CityDto>(
+        Services.AddService(new Service<CityDto>(
             new Dao<City, CityDto>(
                 new GroceryStoreContext(options),
                 new Mapper())));

@@ -36,10 +36,7 @@ public class Dao<TEntity, TDto> : IDao<TDto> where TDto : IDto, new() where TEnt
     {
         var entity = _dbContext.Set<TEntity>().Find(key);
         
-        if (entity is null)
-            return new TDto();
-
-        return (TDto)_mapper.EntityToDto(entity);
+        return entity is null ? new TDto() : (TDto)_mapper.EntityToDto(entity);
     }
 
     public void Update(TDto dto)
