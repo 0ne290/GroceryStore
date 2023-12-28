@@ -34,6 +34,8 @@ internal static class Program
 
         foreach (var country in countries)
             System.Console.WriteLine($"Key = {country.Key}; Name = {country.Name}");
+        
+        Services.Dispose();
     }
 
     private static void CompositionRoot(string connectionString)
@@ -55,5 +57,5 @@ internal static class Program
                 new Mapper())));
     }
 
-    private static readonly ServicesFacade Services = new ServicesFacade();
+    private static readonly ServiceManager Services = new ServiceManager();
 }
