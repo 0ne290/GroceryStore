@@ -1,6 +1,6 @@
 namespace GroceryStore.Logic.Interfaces;
 
-public interface IService<TDto>
+public interface IService<TDto> : IDisposable, IAsyncDisposable
 {
     bool Add(TDto dto);
 

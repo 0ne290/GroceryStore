@@ -2,7 +2,7 @@ using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Logic;
 
-public class ServicesFacade
+public class ServicesFacade : IServicesFacade
 {
     public void AddService<TDto>(IService<TDto> service) where TDto : IDto =>
         _services.Add(typeof(TDto), service);
@@ -14,6 +14,17 @@ public class ServicesFacade
     public void Update<TDto>(TDto dto) where TDto : IDto => ((IService<TDto>)_services[typeof(TDto)]).Update(dto);
     
     public bool SaveChanges<TDto>() where TDto : IDto => ((IService<TDto>)_services[typeof(TDto)]).SaveChanges();
+    
+    public void Dispose()
+    {
+        foreach (var service in _services)
+            ((IService<>)service).
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _dao.DisposeAsync();
+    }
 
     private readonly Dictionary<Type, object> _services = new();
 }

@@ -13,6 +13,10 @@ public class Service<TDto> : IService<TDto> where TDto : IDto
     public void Update(TDto dto) => _dao.Update(dto);
     
     public bool SaveChanges() => _dao.SaveChanges();
+    
+    public void Dispose() => _dao.Dispose();
+
+    public async ValueTask DisposeAsync() => await _dao.DisposeAsync();
 
     private readonly IDao<TDto> _dao;
 }

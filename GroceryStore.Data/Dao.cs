@@ -67,6 +67,10 @@ public class Dao<TEntity, TDto> : IDao<TDto> where TDto : IDto, new() where TEnt
         return true;
     }
     
+    public void Dispose() => _dbContext.Dispose();
+
+    public async ValueTask DisposeAsync() => await _dbContext.DisposeAsync();
+    
     private readonly GroceryStoreContext _dbContext;
     
     private readonly Mapper _mapper;
