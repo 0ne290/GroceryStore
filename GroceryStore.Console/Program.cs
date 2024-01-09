@@ -1,5 +1,4 @@
-﻿using GroceryStore.Console.Commands;
-using GroceryStore.Data;
+﻿using GroceryStore.Data;
 using GroceryStore.Data.Entities;
 using GroceryStore.Logic;
 using GroceryStore.Logic.Dto;
