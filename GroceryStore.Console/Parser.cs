@@ -77,12 +77,12 @@ public class Parser
         BestBefore = Convert.ToInt32(Lexemes[4])
     };
     
-    private ProductInStoreDto ParseProductInStoreDto() => Lexemes.Length < 4 ? new ProductInStoreDto() : new ProductInStoreDto(Convert.ToInt32(Lexemes[0], Convert.ToInt32(Lexemes[1])))
+    private ProductInStoreDto ParseProductInStoreDto() => Lexemes.Length < 4 ? new ProductInStoreDto() : new ProductInStoreDto(Convert.ToInt32(Lexemes[0]), Convert.ToInt32(Lexemes[1]))
     {
         Quantity = Convert.ToInt32(Lexemes[2]), WarehouseKey = Convert.ToInt32(Lexemes[3])
     };
     
-    private ProductInWarehouseDto ParseProductInWarehouseDto() => Lexemes.Length < 4 ? new ProductInWarehouseDto() : new ProductInWarehouseDto(Convert.ToInt32(Lexemes[0], Convert.ToInt32(Lexemes[1])))
+    private ProductInWarehouseDto ParseProductInWarehouseDto() => Lexemes.Length < 4 ? new ProductInWarehouseDto() : new ProductInWarehouseDto(Convert.ToInt32(Lexemes[0]), Convert.ToInt32(Lexemes[1]))
     {
         Quantity = Convert.ToInt32(Lexemes[2]), DateOfManufacture = DateTime.Parse(Lexemes[3])
     };
