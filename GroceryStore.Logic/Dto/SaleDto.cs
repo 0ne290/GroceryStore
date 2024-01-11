@@ -2,7 +2,9 @@ namespace GroceryStore.Logic.Dto;
 
 public class SaleDto : BaseDto
 {
-    public SaleDto(int productKey = -1, int customerKey = -1, DateTime date = default) : base(new [] { productKey, customerKey }) => Date = date;
+    public SaleDto(int productKey, int customerKey, DateTime date) : base(new [] { productKey, customerKey }) => Date = date;
+    
+    public SaleDto() : base(new [] { -1, -1 }) => Date = default;
 
     public override bool IsEmpty() => base.IsEmpty() || Date == default;
     
