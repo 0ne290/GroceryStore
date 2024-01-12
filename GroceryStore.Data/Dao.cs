@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using GroceryStore.Data.Interfaces;
 using GroceryStore.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,27 @@ public class Dao<TEntity, TDto> : IDao<TDto> where TDto : IDto, new() where TEnt
         _dbContext.Set<TEntity>().Add(entity);
 
         return true;
+    }
+    
+    public IEnumerable<TDto> Get(Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)//, string includeProperties = "")
+    {
+        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+
+        //foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        //{
+        //    query = query.Include(includeProperty);
+        //}
+        
+        // ReSharper disable once MergeConditionalExpression
+        var entities = orderBy != null ? orderBy(query).AsNoTracking().AsEnumerable() : query.AsNoTracking().AsEnumerable();
+        
+        return from entity in entities
+            select (TDto)_mapper.EntityToDto(entity);
     }
 
     public IEnumerable<TDto> GetAll()
