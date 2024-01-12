@@ -7,8 +7,10 @@ public interface IServiceManager : IDisposable, IAsyncDisposable
     bool Add<TDto>(TDto dto) where TDto : IDto;
 
     IEnumerable<TDto> GetAll<TDto>() where TDto : IDto;
+    
+    TDto GetByKey<TDto>(object[] key) where TDto : IDto;
 
-    void Update<TDto>(TDto dto) where TDto : IDto;
+    bool Update<TDto>(TDto dto) where TDto : IDto;
 
     bool SaveChanges<TDto>() where TDto : IDto;
 }

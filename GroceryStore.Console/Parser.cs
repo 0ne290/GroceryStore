@@ -5,6 +5,43 @@ namespace GroceryStore.Console;
 
 public class Parser
 {
+    public object[] ParseKey(Type type)
+    {
+        if (!typeof(IDto).IsAssignableFrom(type))
+            throw new ArgumentException("Parsing key can only be performed for the IDto type");
+        
+        if (type == typeof(CityDto))
+            return ParseCityDto();
+        if (type == typeof(CountryDto))
+            return ParseCountryDto();
+        if (type == typeof(EmployeeDto))
+            return ParseEmployeeDto();
+        if (type == typeof(ManufacturerDto))
+            return ParseManufacturerDto();
+        if (type == typeof(PositionDto))
+            return ParsePositionDto();
+        if (type == typeof(ProductDto))
+            return ParseProductDto();
+        if (type == typeof(ProductInStoreDto))
+            return ParseProductInStoreDto();
+        if (type == typeof(ProductInWarehouseDto))
+            return ParseProductInWarehouseDto();
+        if (type == typeof(RegionDto))
+            return ParseRegionDto();
+        if (type == typeof(RegularCustomerDto))
+            return ParseRegularCustomerDto();
+        if (type == typeof(SaleDto))
+            return ParseSaleDto();
+        if (type == typeof(StoreDto))
+            return ParseStoreDto();
+        if (type == typeof(StreetDto))
+            return ParseStreetDto();
+        if (type == typeof(WarehouseDto))
+            return ParseWarehouseDto();
+        
+        throw new ArgumentException($"Type {type} is not yet supported for parsing key");
+    }
+    
     public IDto Parse(Type type)
     {
         if (!typeof(IDto).IsAssignableFrom(type))

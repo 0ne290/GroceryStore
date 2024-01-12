@@ -10,7 +10,9 @@ public class Service<TDto> : IService<TDto> where TDto : IDto
 
     public IEnumerable<TDto> GetAll() => _dao.GetAll();
 
-    public void Update(TDto dto) => _dao.Update(dto);
+    public TDto GetByKey(object[] key) => _dao.GetByKey(key);
+
+    public bool Update(TDto dto) => _dao.Update(dto);
     
     public bool SaveChanges() => _dao.SaveChanges();
     

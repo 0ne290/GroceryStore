@@ -8,9 +8,9 @@ public interface IDao<TDto> : IDisposable, IAsyncDisposable
 
     TDto GetByKey(object[] key);
 
-    void Update(TDto dto);
+    bool Update(TDto dto);
 
-    void Remove(TDto dto);
+    bool Remove(TDto dto);
 
     bool SaveChanges();
 }

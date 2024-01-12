@@ -10,8 +10,10 @@ public class ServiceManager : IServiceManager
     public bool Add<TDto>(TDto dto) where TDto : IDto => ((IService<TDto>)_services[typeof(TDto)]).Add(dto);
 
     public IEnumerable<TDto> GetAll<TDto>() where TDto : IDto => ((IService<TDto>)_services[typeof(TDto)]).GetAll();
+    
+    public TDto GetByKey<TDto>(object[] key) where TDto : IDto => ((IService<TDto>)_services[typeof(TDto)]).GetByKey(key);
 
-    public void Update<TDto>(TDto dto) where TDto : IDto => ((IService<TDto>)_services[typeof(TDto)]).Update(dto);
+    public bool Update<TDto>(TDto dto) where TDto : IDto => ((IService<TDto>)_services[typeof(TDto)]).Update(dto);
     
     public bool SaveChanges<TDto>() where TDto : IDto => ((IService<TDto>)_services[typeof(TDto)]).SaveChanges();
     

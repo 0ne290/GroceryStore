@@ -39,18 +39,28 @@ public class Dao<TEntity, TDto> : IDao<TDto> where TDto : IDto, new() where TEnt
         return entity is null ? new TDto() : (TDto)_mapper.EntityToDto(entity);
     }
 
-    public void Update(TDto dto)
+    public bool Update(TDto dto)
     {
+        if (dto.IsEmpty())
+            return false;
+        
         var entity = _mapper.DtoToEntity(dto);
         
         _dbContext.Set<TEntity>().Update((TEntity)entity);
+
+        return true;
     }
 
-    public void Remove(TDto dto)
+    public bool Remove(TDto dto)
     {
+        if (dto.IsEmpty())
+            return false;
+        
         var entity = _mapper.DtoToEntity(dto);
         
         _dbContext.Set<TEntity>().Remove((TEntity)entity);
+
+        return true;
     }
     
     public bool SaveChanges()

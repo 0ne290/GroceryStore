@@ -5,8 +5,10 @@ public interface IService<TDto> : IDisposable, IAsyncDisposable
     bool Add(TDto dto);
 
     IEnumerable<TDto> GetAll();
+    
+    TDto GetByKey(object[] key);
 
-    void Update(TDto dto);
+    bool Update(TDto dto);
 
     bool SaveChanges();
 }
