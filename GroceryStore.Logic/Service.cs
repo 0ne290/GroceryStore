@@ -2,9 +2,9 @@
 
 namespace GroceryStore.Logic;
 
-public class Service<TDto> : IService<TDto> where TDto : IDto
+public class Service<TEntity, TDto> : IService<TDto> where TDto : IDto where TEntity : IEntity
 {
-    public Service(IDao<TDto> dao) => _dao = dao;
+    public Service(IDao<TEntity, TDto> dao) => _dao = dao;
 
     public bool Add(TDto dto) => _dao.Create(dto);
 
@@ -20,5 +20,5 @@ public class Service<TDto> : IService<TDto> where TDto : IDto
 
     public async ValueTask DisposeAsync() => await _dao.DisposeAsync();
 
-    private readonly IDao<TDto> _dao;
+    private readonly IDao<TEntity, TDto> _dao;
 }

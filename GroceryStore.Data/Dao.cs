@@ -1,11 +1,10 @@
 using System.Linq.Expressions;
-using GroceryStore.Data.Interfaces;
 using GroceryStore.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data;
 
-public class Dao<TEntity, TDto> : IDao<TDto> where TDto : IDto, new() where TEntity : class, IEntity
+public class Dao<TEntity, TDto> : IDao<TEntity, TDto> where TDto : IDto, new() where TEntity : class, IEntity
 {
     public Dao(GroceryStoreContext dbContext, Mapper mapper)
     {

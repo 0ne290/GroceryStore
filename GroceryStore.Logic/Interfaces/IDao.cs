@@ -1,8 +1,12 @@
+using System.Linq.Expressions;
+
 namespace GroceryStore.Logic.Interfaces;
 
-public interface IDao<TDto> : IDisposable, IAsyncDisposable
+public interface IDao<TEntity, TDto> : IDisposable, IAsyncDisposable
 {
     bool Create(TDto dto);
+
+    IEnumerable<TDto> Get(Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null);//, string includeProperties = "")
 
     IEnumerable<TDto> GetAll();
 
