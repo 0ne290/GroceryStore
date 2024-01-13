@@ -1,8 +1,8 @@
 ﻿using GroceryStore.Logic.Interfaces;
 
-namespace GroceryStore.Data.Entities;
+namespace GroceryStore.Logic.Entities;
 
-public sealed class Store : IEntity
+public sealed class Warehouse : IEntity
 {
     public int Key { get; set; }
 
@@ -28,7 +28,7 @@ public sealed class Store : IEntity
 
     public Street? StreetKeyNavigation { get; set; }
 
-    public IEnumerable<Employee> Staff { get; set; } = new List<Employee>();
+    public IEnumerable<ProductInStore> ProductsInStores { get; set; } = new List<ProductInStore>();
 
-    public IEnumerable<ProductInStore> Products { get; set; } = new List<ProductInStore>();
+    public IEnumerable<ProductInWarehouse> ProductsInWarehouses { get; set; } = new List<ProductInWarehouse>();
 }

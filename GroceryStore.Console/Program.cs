@@ -1,7 +1,7 @@
 ﻿using GroceryStore.Data;
-using GroceryStore.Data.Entities;
 using GroceryStore.Logic;
 using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Entities;
 using Microsoft.EntityFrameworkCore;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -26,11 +26,11 @@ internal static class Program
         
         var countryDto = new CountryDto() { Key = 11, Name = "Russia" };
 
-        Services.Add(countryDto);
+        Services.Add<Country, CountryDto>(countryDto);
         
-        System.Console.WriteLine(Services.SaveChanges<CountryDto>());
+        System.Console.WriteLine(Services.SaveChanges<Country, CountryDto>());
 
-        var countries = Services.GetAll<CountryDto>();
+        var countries = Services.GetAll<Country, CountryDto>();
 
         foreach (var country in countries)
             System.Console.WriteLine($"Key = {country.Key}; Name = {country.Name}");
@@ -48,76 +48,34 @@ internal static class Program
 
         var mapper = new Mapper();
 
-        Services.AddService(new Service<CityDto>(
-            new Dao<City, CityDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<City, CityDto>(new GroceryStoreContext(options), mapper));
 
-        Services.AddService(new Service<CountryDto>(
-            new Dao<Country, CountryDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Country, CountryDto>(new GroceryStoreContext(options), mapper));
         
-        Services.AddService(new Service<EmployeeDto>(
-            new Dao<Employee, EmployeeDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Employee, EmployeeDto>(new GroceryStoreContext(options), mapper));
         
-        Services.AddService(new Service<ManufacturerDto>(
-            new Dao<Manufacturer, ManufacturerDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Manufacturer, ManufacturerDto>(new GroceryStoreContext(options), mapper));
 
-        Services.AddService(new Service<PositionDto>(
-            new Dao<Position, PositionDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Position, PositionDto>(new GroceryStoreContext(options), mapper));
         
-        Services.AddService(new Service<ProductDto>(
-            new Dao<Product, ProductDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Product, ProductDto>(new GroceryStoreContext(options), mapper));
         
-        Services.AddService(new Service<ProductInStoreDto>(
-            new Dao<ProductInStore, ProductInStoreDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<ProductInStore, ProductInStoreDto>(new GroceryStoreContext(options), mapper));
 
-        Services.AddService(new Service<ProductInWarehouseDto>(
-            new Dao<ProductInWarehouse, ProductInWarehouseDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<ProductInWarehouse, ProductInWarehouseDto>(new GroceryStoreContext(options), mapper));
         
-        Services.AddService(new Service<RegionDto>(
-            new Dao<Region, RegionDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Region, RegionDto>(new GroceryStoreContext(options), mapper));
         
-        Services.AddService(new Service<RegularCustomerDto>(
-            new Dao<RegularCustomer, RegularCustomerDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<RegularCustomer, RegularCustomerDto>(new GroceryStoreContext(options), mapper));
 
-        Services.AddService(new Service<SaleDto>(
-            new Dao<Sale, SaleDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Sale, SaleDto>(new GroceryStoreContext(options), mapper));
         
-        Services.AddService(new Service<StoreDto>(
-            new Dao<Store, StoreDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Store, StoreDto>(new GroceryStoreContext(options), mapper));
         
-        Services.AddService(new Service<StreetDto>(
-            new Dao<Street, StreetDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Street, StreetDto>(new GroceryStoreContext(options), mapper));
 
-        Services.AddService(new Service<WarehouseDto>(
-            new Dao<Warehouse, WarehouseDto>(
-                new GroceryStoreContext(options),
-                mapper)));
+        Services.AddDao(new Dao<Warehouse, WarehouseDto>(new GroceryStoreContext(options), mapper));
     }
 
-    private static readonly ServiceManager Services = new ServiceManager();
+    private static readonly UnitOfWork Services = new UnitOfWork();
 }

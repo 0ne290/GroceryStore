@@ -1,16 +1,14 @@
 ﻿using GroceryStore.Logic.Interfaces;
 
-namespace GroceryStore.Data.Entities;
+namespace GroceryStore.Logic.Entities;
 
-public sealed class Manufacturer : IEntity
+public sealed class Store : IEntity
 {
     public int Key { get; set; }
 
-    public string? Name { get; set; }
+    public DateTime? EndOfLease { get; set; }
 
     public string? Contact { get; set; }
-
-    public int? CountryKey { get; set; }
 
     public int? RegionKey { get; set; }
 
@@ -24,13 +22,13 @@ public sealed class Manufacturer : IEntity
 
     public string? HouseLetter { get; set; }
     
-    public Country? CountryKeyNavigation { get; set; }
-    
     public Region? RegionKeyNavigation { get; set; }
     
     public City? CityKeyNavigation { get; set; }
 
     public Street? StreetKeyNavigation { get; set; }
 
-    public IEnumerable<Product> Products { get; set; } = new List<Product>();
+    public IEnumerable<Employee> Staff { get; set; } = new List<Employee>();
+
+    public IEnumerable<ProductInStore> Products { get; set; } = new List<ProductInStore>();
 }

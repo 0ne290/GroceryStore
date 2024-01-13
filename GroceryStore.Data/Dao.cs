@@ -29,9 +29,7 @@ public class Dao<TEntity, TDto> : IDao<TEntity, TDto> where TDto : IDto, new() w
         IQueryable<TEntity> query = _dbContext.Set<TEntity>();
 
         if (filter != null)
-        {
             query = query.Where(filter);
-        }
 
         //foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
         //{

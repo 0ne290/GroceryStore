@@ -1,5 +1,5 @@
-using GroceryStore.Data.Entities;
 using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Entities;
 using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Data;
