@@ -2,12 +2,12 @@ using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Console;
 
-public class Controller<TDto> where TDto : IDto
+public class Controller<TEntity, TDto> where TDto : IDto where TEntity : IEntity;
 {
-    public Controller(string[] command, IServiceManager services, Parser parser, Printer printer)
+    public Controller(string[] command, IUnitOfWork unitOfWork, Parser parser, Printer printer)
     {
         _command = command;
-        _services = services;
+        _unitOfWork = unitOfWork;
         _parser = parser;
         _parser.Lexemes = _command[1..];
         _printer = printer;
@@ -15,18 +15,32 @@ public class Controller<TDto> where TDto : IDto
 
     public bool ExecuteCommand() => _command[0] switch
     {
-        "add" => Add(),
-        "getall" => GetAll(),
-        "get" => GetByKey(),
-        "update" => Update(),
+        "Add" => Add(),
+        "GetByCriterion" => GetByCriterion(),
+        "GetAll" => GetAll(),
+        "GetByKey" => GetByKey(),
+        "Update" => Update(),
         _ => Default()
     };
+
+    private bool GetByCriterion()
+    {
+        var filter = _parser.ParseFilter<TDto>();
+        var orderBy = _parser.ParseSorting<TDto>();
+
+        var dtos = _unitOfWork.Get<TEntity, TDto>(filter, orderBy);
+
+        foreach (var dto in dtos)
+            _printer.Print(dto);
+
+        return true;
+    }
 
     private bool Add()
     {
         var dto = (TDto)_parser.Parse(typeof(TDto));
-        var ret = _services.Add(dto);
-        ret = ret && _services.SaveChanges<TDto>();
+        var ret = _unitOfWork.Add<TEntity, TDto>(dto);
+        ret = ret && _unitOfWork.SaveChanges<TEntity, TDto>();
                 
         System.Console.WriteLine(ret);
 
@@ -35,7 +49,7 @@ public class Controller<TDto> where TDto : IDto
 
     private bool GetAll()
     {
-        var dtos = _services.GetAll<TDto>();
+        var dtos = _unitOfWork.GetAll<TEntity, TDto>();
 
         foreach (var dto in dtos)
             _printer.Print(dto);
@@ -46,7 +60,7 @@ public class Controller<TDto> where TDto : IDto
     private bool GetByKey()
     {
         var key = (TDto)_parser.ParseKey(typeof(TDto));
-        var dto = _services.GetByKey<TDto>(key);
+        var dto = _unitOfWork.GetByKey<TEntity, TDto>(key);
         var ret = !dto.IsEmpty();
 
         if (ret)
@@ -58,8 +72,8 @@ public class Controller<TDto> where TDto : IDto
     private bool Update()
     {
         var dto = (TDto)_parser.Parse(typeof(TDto));
-        var ret = _services.Update(dto);
-        ret = ret && _services.SaveChanges<TDto>();
+        var ret = _unitOfWork.Update<TEntity, TDto>(dto);
+        ret = ret && _services.SaveChanges<TEntity, TDto>();
                 
         System.Console.WriteLine(ret);
 
@@ -79,5 +93,5 @@ public class Controller<TDto> where TDto : IDto
 
     private readonly Printer _printer;
 
-    private readonly IServiceManager _services;
+    private readonly IUnitOfWork _unitOfWork;
 }
