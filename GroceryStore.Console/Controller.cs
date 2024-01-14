@@ -1,8 +1,9 @@
+using System.Linq.Expressions;
 using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Console;
 
-public class Controller<TEntity, TDto> where TDto : IDto where TEntity : IEntity;
+public class Controller<TEntity, TDto> where TDto : IDto where TEntity : IEntity
 {
     public Controller(string[] command, IUnitOfWork unitOfWork, Parser parser, Printer printer)
     {
@@ -25,8 +26,8 @@ public class Controller<TEntity, TDto> where TDto : IDto where TEntity : IEntity
 
     private bool GetByCriterion()
     {
-        var filter = _parser.ParseFilter<TDto>();
-        var orderBy = _parser.ParseSorting<TDto>();
+        var filter = (Expression<Func<TEntity, bool>>)_parser.ParseFilter(typeof(TDto));
+        var orderBy = _parser.ParseSorting(typeof(TDto));
 
         var dtos = _unitOfWork.Get<TEntity, TDto>(filter, orderBy);
 
@@ -59,7 +60,7 @@ public class Controller<TEntity, TDto> where TDto : IDto where TEntity : IEntity
     
     private bool GetByKey()
     {
-        var key = (TDto)_parser.ParseKey(typeof(TDto));
+        var key = _parser.ParseKey(typeof(TDto));
         var dto = _unitOfWork.GetByKey<TEntity, TDto>(key);
         var ret = !dto.IsEmpty();
 
@@ -73,7 +74,7 @@ public class Controller<TEntity, TDto> where TDto : IDto where TEntity : IEntity
     {
         var dto = (TDto)_parser.Parse(typeof(TDto));
         var ret = _unitOfWork.Update<TEntity, TDto>(dto);
-        ret = ret && _services.SaveChanges<TEntity, TDto>();
+        ret = ret && _unitOfWork.SaveChanges<TEntity, TDto>();
                 
         System.Console.WriteLine(ret);
 

@@ -1,45 +1,71 @@
+using System.Linq.Expressions;
 using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Entities;
 using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Console;
 
 public class Parser
 {
+    public object ParseFilter(Type type)
+    {
+        Expression<Func<City, bool>> v = city => city.Name == "zdvg";
+        return v;
+    }
+    
+    public object[] ParseSorting(Type type)
+    {
+        if (!typeof(IDto).IsAssignableFrom(type))
+            throw new ArgumentException("Parsing key can only be performed for the IDto type");
+
+        if (type == typeof(ProductInStoreDto))
+            return ParseIntKey(2);
+        if (type == typeof(ProductInWarehouseDto))
+            return ParseIntKey(2);
+        if (type == typeof(SaleDto))
+            return ParseKeySaleDto();
+        
+        throw new ArgumentException($"Type {type} is not yet supported for parsing key");
+    }
+    
     public object[] ParseKey(Type type)
     {
         if (!typeof(IDto).IsAssignableFrom(type))
             throw new ArgumentException("Parsing key can only be performed for the IDto type");
-        
-        if (type == typeof(CityDto))
-            return ParseCityDto();
-        if (type == typeof(CountryDto))
-            return ParseCountryDto();
-        if (type == typeof(EmployeeDto))
-            return ParseEmployeeDto();
-        if (type == typeof(ManufacturerDto))
-            return ParseManufacturerDto();
-        if (type == typeof(PositionDto))
-            return ParsePositionDto();
-        if (type == typeof(ProductDto))
-            return ParseProductDto();
+
         if (type == typeof(ProductInStoreDto))
-            return ParseProductInStoreDto();
+            return ParseIntKey(2);
         if (type == typeof(ProductInWarehouseDto))
-            return ParseProductInWarehouseDto();
-        if (type == typeof(RegionDto))
-            return ParseRegionDto();
-        if (type == typeof(RegularCustomerDto))
-            return ParseRegularCustomerDto();
+            return ParseIntKey(2);
         if (type == typeof(SaleDto))
-            return ParseSaleDto();
-        if (type == typeof(StoreDto))
-            return ParseStoreDto();
-        if (type == typeof(StreetDto))
-            return ParseStreetDto();
-        if (type == typeof(WarehouseDto))
-            return ParseWarehouseDto();
+            return ParseKeySaleDto();
         
         throw new ArgumentException($"Type {type} is not yet supported for parsing key");
+    }
+    
+    private object[] ParseKeySaleDto()
+    {
+        if (Lexemes.Length < 3)
+            return Array.Empty<object>();
+
+        var ret = new object[3];
+        for (var i = 0; i < 2; i++)
+            ret[i] = Convert.ToInt32(Lexemes[i]);
+        ret[2] = DateTime.Parse(Lexemes[2]);
+
+        return ret;
+    }
+
+    private object[] ParseIntKey(int length)
+    {
+        if (Lexemes.Length < length)
+            return Array.Empty<object>();
+
+        var ret = new object[length];
+        for (var i = 0; i < length; i++)
+            ret[i] = Convert.ToInt32(Lexemes[i]);
+
+        return ret;
     }
     
     public IDto Parse(Type type)
