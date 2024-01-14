@@ -1,11 +1,42 @@
 using System.Linq.Expressions;
+using GroceryStore.Console.Interfaces;
+using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Entities;
 using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Console;
 
-public class Controller<TEntity, TDto> where TDto : IDto where TEntity : IEntity
+public class Controller<TEntity, TDto> : IController where TDto : IDto where TEntity : IEntity
 {
-    public Controller(string[] command, IUnitOfWork unitOfWork, Parser parser, Printer printer)
+    public static void ExecuteCommand(string[] command, IUnitOfWork unitOfWork, Parser parser, Printer printer)
+    {
+        var controller = CreateController(command, unitOfWork, parser, printer);
+
+        controller.ExecuteCommand();
+    }
+
+    private static IController CreateController(string[] command, IUnitOfWork unitOfWork, Parser parser,
+        Printer printer) =>
+        command[0] switch
+        {
+            "City" => new Controller<City, CityDto>(command[1..], unitOfWork, parser, printer),
+            "Country" => new Controller<Country, CountryDto>(command[1..], unitOfWork, parser, printer),
+            "Employee" => new Controller<Employee, EmployeeDto>(command[1..], unitOfWork, parser, printer),
+            "Manufacturer" => new Controller<Manufacturer, ManufacturerDto>(command[1..], unitOfWork, parser, printer),
+            "Position" => new Controller<Position, PositionDto>(command[1..], unitOfWork, parser, printer),
+            "Product" => new Controller<Product, ProductDto>(command[1..], unitOfWork, parser, printer),
+            "ProductInStore" => new Controller<ProductInStore, ProductInStoreDto>(command[1..], unitOfWork, parser, printer),
+            "ProductInWarehouse" => new Controller<ProductInWarehouse, ProductInWarehouseDto>(command[1..], unitOfWork, parser, printer),
+            "Region" => new Controller<Region, RegionDto>(command[1..], unitOfWork, parser, printer),
+            "RegularCustomer" => new Controller<RegularCustomer, RegularCustomerDto>(command[1..], unitOfWork, parser, printer),
+            "Sale" => new Controller<Sale, SaleDto>(command[1..], unitOfWork, parser, printer),
+            "Store" => new Controller<Store, StoreDto>(command[1..], unitOfWork, parser, printer),
+            "Street" => new Controller<Street, StreetDto>(command[1..], unitOfWork, parser, printer),
+            "Warehouse" => new Controller<Warehouse, WarehouseDto>(command[1..], unitOfWork, parser, printer),
+            _ => throw new Exception("Unable to select database entity. Invalid value entered")
+        };
+    
+    private Controller(string[] command, IUnitOfWork unitOfWork, Parser parser, Printer printer)
     {
         _command = command;
         _unitOfWork = unitOfWork;
@@ -27,9 +58,9 @@ public class Controller<TEntity, TDto> where TDto : IDto where TEntity : IEntity
     private bool GetByCriterion()
     {
         var filter = (Expression<Func<TEntity, bool>>)_parser.ParseFilter(typeof(TDto));
-        var orderBy = _parser.ParseSorting(typeof(TDto));
+        //var orderBy = _parser.ParseSorting(typeof(TDto));
 
-        var dtos = _unitOfWork.Get<TEntity, TDto>(filter, orderBy);
+        var dtos = _unitOfWork.Get<TEntity, TDto>(filter);
 
         foreach (var dto in dtos)
             _printer.Print(dto);

@@ -6,7 +6,7 @@ public interface IDao<TEntity, TDto> : IDisposable, IAsyncDisposable
 {
     bool Create(TDto dto);
 
-    IEnumerable<TDto> Get(Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null);//, string includeProperties = "")
+    IEnumerable<TDto> Get(Expression<Func<TEntity, bool>>? filter = null);//, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "");
 
     IEnumerable<TDto> GetAll();
 

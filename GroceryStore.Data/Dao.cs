@@ -24,7 +24,7 @@ public class Dao<TEntity, TDto> : IDao<TEntity, TDto> where TDto : IDto, new() w
         return true;
     }
     
-    public IEnumerable<TDto> Get(Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)//, string includeProperties = "")
+    public IEnumerable<TDto> Get(Expression<Func<TEntity, bool>>? filter = null)//, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "")
     {
         IQueryable<TEntity> query = _dbContext.Set<TEntity>();
 
@@ -37,7 +37,9 @@ public class Dao<TEntity, TDto> : IDao<TEntity, TDto> where TDto : IDto, new() w
         //}
         
         // ReSharper disable once MergeConditionalExpression
-        var entities = orderBy != null ? orderBy(query).AsNoTracking().AsEnumerable() : query.AsNoTracking().AsEnumerable();
+        //var entities = orderBy != null ? orderBy(query).AsNoTracking().AsEnumerable() : query.AsNoTracking().AsEnumerable();
+        
+        var entities = query.AsNoTracking().AsEnumerable();
         
         return from entity in entities
             select (TDto)_mapper.EntityToDto(entity);

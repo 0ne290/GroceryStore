@@ -11,10 +11,9 @@ public class UnitOfWork : IUnitOfWork
     public bool Add<TEntity, TDto>(TDto dto) where TDto : IDto where TEntity : IEntity =>
         ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).Create(dto);
 
-    public IEnumerable<TDto> Get<TEntity, TDto>(Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
+    public IEnumerable<TDto> Get<TEntity, TDto>(Expression<Func<TEntity, bool>>? filter = null)
         where TDto : IDto where TEntity : IEntity =>
-        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).Get(filter, orderBy);
+        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).Get(filter);
 
     public IEnumerable<TDto> GetAll<TEntity, TDto>() where TDto : IDto where TEntity : IEntity =>
         ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).GetAll();

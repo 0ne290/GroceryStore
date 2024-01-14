@@ -9,24 +9,36 @@ public class Parser
 {
     public object ParseFilter(Type type)
     {
-        Expression<Func<City, bool>> v = city => city.Name == "zdvg";
-        return v;
+        if (!typeof(IDto).IsAssignableFrom(type))
+            throw new ArgumentException("Parsing filter can only be performed for the IDto type");
+        
+        if (type == typeof(EmployeeDto))
+            return ParseFilterEmployee();
+        if (type == typeof(SaleDto))
+            return ParseFilterProduct();
+        
+        throw new ArgumentException($"Type {type} is not yet supported for parsing filter");
     }
     
-    public object[] ParseSorting(Type type)
-    {
-        if (!typeof(IDto).IsAssignableFrom(type))
-            throw new ArgumentException("Parsing key can only be performed for the IDto type");
-
-        if (type == typeof(ProductInStoreDto))
-            return ParseIntKey(2);
-        if (type == typeof(ProductInWarehouseDto))
-            return ParseIntKey(2);
-        if (type == typeof(SaleDto))
-            return ParseKeySaleDto();
-        
-        throw new ArgumentException($"Type {type} is not yet supported for parsing key");
-    }
+    private Expression<Func<Employee, bool>> ParseFilterEmployee() => Lexemes.Length < 1 ? _ => false : employee =>
+        employee.EmploymentDate != null && DateTime.Now.Subtract(employee.EmploymentDate.Value).Days >= Convert.ToInt32(Lexemes[0]);
+    
+    private Expression<Func<Product, bool>> ParseFilterProduct() => Lexemes.Length < 1 ? _ => false : product => product.DegreeOfProcessing == Lexemes[0];
+    
+    //public object[] ParseSorting(Type type)
+    //{
+    //    if (!typeof(IDto).IsAssignableFrom(type))
+    //        throw new ArgumentException("Parsing key can only be performed for the IDto type");
+//
+    //    if (type == typeof(ProductInStoreDto))
+    //        return ParseIntKey(2);
+    //    if (type == typeof(ProductInWarehouseDto))
+    //        return ParseIntKey(2);
+    //    if (type == typeof(SaleDto))
+    //        return ParseKeySaleDto();
+    //    
+    //    throw new ArgumentException($"Type {type} is not yet supported for parsing key");
+    //}
     
     public object[] ParseKey(Type type)
     {

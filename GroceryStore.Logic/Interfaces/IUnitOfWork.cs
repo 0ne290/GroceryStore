@@ -8,7 +8,7 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
 
     bool Add<TEntity, TDto>(TDto dto) where TDto : IDto where TEntity : IEntity;
     
-    IEnumerable<TDto> Get<TEntity, TDto>(Expression<Func<TEntity, bool>>? filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null) where TDto : IDto where TEntity : IEntity;
+    IEnumerable<TDto> Get<TEntity, TDto>(Expression<Func<TEntity, bool>>? filter = null) where TDto : IDto where TEntity : IEntity;
 
     IEnumerable<TDto> GetAll<TEntity, TDto>() where TDto : IDto where TEntity : IEntity;
     

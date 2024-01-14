@@ -2,6 +2,7 @@
 using GroceryStore.Logic;
 using GroceryStore.Logic.Dto;
 using GroceryStore.Logic.Entities;
+using GroceryStore.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -17,25 +18,8 @@ internal static class Program
             : "server=localhost;user=root;password=!EdCbA21435=;database=GroceryStore";
         
         CompositionRoot(connectionString);
-
-        //var cityDto = new CityDto() { Key = 18, Name = "Abobus", RegionKey = -1 };
-//
-        //_cityService.UpdateCity(cityDto);
-        //
-        //System.Console.WriteLine(_cityService.SaveChanges());
         
-        var countryDto = new CountryDto() { Key = 11, Name = "Russia" };
-
-        Services.Add<Country, CountryDto>(countryDto);
-        
-        System.Console.WriteLine(Services.SaveChanges<Country, CountryDto>());
-
-        var countries = Services.GetAll<Country, CountryDto>();
-
-        foreach (var country in countries)
-            System.Console.WriteLine($"Key = {country.Key}; Name = {country.Name}");
-        
-        Services.Dispose();
+        Controller<IEntity, IDto>.ExecuteCommand(args[1..args.Length], Services, new Parser(), new Printer());
     }
 
     private static void CompositionRoot(string connectionString)
