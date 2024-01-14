@@ -20,8 +20,14 @@ public class Parser
         throw new ArgumentException($"Type {type} is not yet supported for parsing filter");
     }
     
-    private Expression<Func<Employee, bool>> ParseFilterEmployee() => Lexemes.Length < 1 ? _ => false : employee =>
-        employee.EmploymentDate != null && DateTime.Now.Subtract(employee.EmploymentDate.Value).Days >= Convert.ToInt32(Lexemes[0]);
+    private Expression<Func<Employee, bool>> ParseFilterEmployee()
+    {
+        var before = DateTime.Now.AddDays(-Convert.ToInt32(Lexemes[0]));
+
+        Expression<Func<Employee, bool>> ret = Lexemes.Length < 1 ? _ => false : employee => employee.EmploymentDate >= before;
+
+        return ret;
+    }
     
     private Expression<Func<Product, bool>> ParseFilterProduct() => Lexemes.Length < 1 ? _ => false : product => product.DegreeOfProcessing == Lexemes[0];
     
@@ -52,7 +58,7 @@ public class Parser
         if (type == typeof(SaleDto))
             return ParseKeySaleDto();
         
-        throw new ArgumentException($"Type {type} is not yet supported for parsing key");
+        return ParseIntKey(1);
     }
     
     private object[] ParseKeySaleDto()
