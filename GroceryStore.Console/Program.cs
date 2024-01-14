@@ -13,13 +13,19 @@ internal static class Program
 {
     private static void Main(string[] args)
     {
+        foreach (var arg in args)
+            System.Console.WriteLine(arg);
+        
         var connectionString = args.Length > 0
             ? args[0]
             : "server=localhost;user=root;password=!EdCbA21435=;database=GroceryStore";
         
         CompositionRoot(connectionString);
         
-        Controller<IEntity, IDto>.ExecuteCommand(args[1..args.Length], Services, new Parser(), new Printer());
+        Controller<IEntity, IDto>.ExecuteCommand(args[1..], Services, new Parser(), new Printer());
+
+        System.Console.Write("Нажмите любую клавишу...");
+        System.Console.ReadKey();
     }
 
     private static void CompositionRoot(string connectionString)

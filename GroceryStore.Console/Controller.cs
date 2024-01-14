@@ -63,7 +63,7 @@ public class Controller<TEntity, TDto> : IController where TDto : IDto where TEn
         var dtos = _unitOfWork.Get<TEntity, TDto>(filter);
 
         foreach (var dto in dtos)
-            _printer.Print(dto);
+            _printer.Print(new[] { dto });
 
         return true;
     }
@@ -83,8 +83,7 @@ public class Controller<TEntity, TDto> : IController where TDto : IDto where TEn
     {
         var dtos = _unitOfWork.GetAll<TEntity, TDto>();
 
-        foreach (var dto in dtos)
-            _printer.Print(dto);
+        _printer.Print(dtos);
 
         return true;
     }
@@ -96,7 +95,7 @@ public class Controller<TEntity, TDto> : IController where TDto : IDto where TEn
         var ret = !dto.IsEmpty();
 
         if (ret)
-            _printer.Print(dto);
+            _printer.Print(new[] { dto });
 
         return ret;
     }
