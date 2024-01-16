@@ -24,10 +24,10 @@ public class Printer
     
                 break;
             case IEnumerable<EmployeeDto> employeeDtos:
-                System.Console.WriteLine($"{"Key",-15} {"FullName",-15} {"StoreKey",-15} {"PositionKey",-15} {"EmploymentDate",-15}");
+                System.Console.WriteLine($"{"Key",-15} {"Surname",-15} {"Name",-15} {"Patronymic",-15} {"StoreKey",-15} {"PositionKey",-15} {"EmploymentDate",-15}");
     
                 foreach (var employeeDto in employeeDtos)
-                    System.Console.WriteLine($"{employeeDto.Key,-15} {employeeDto.FullName,-15} {employeeDto.StoreKey,-15} {employeeDto.PositionKey,-15} {employeeDto.EmploymentDate,-15}");
+                    System.Console.WriteLine($"{employeeDto.Key,-15} {employeeDto.Surname,-15} {employeeDto.Name,-15} {employeeDto.Patronymic,-15} {employeeDto.StoreKey,-15} {employeeDto.PositionKey,-15} {employeeDto.EmploymentDate,-15}");
     
                 break;
             case IEnumerable<ManufacturerDto> manufacturerDtos:

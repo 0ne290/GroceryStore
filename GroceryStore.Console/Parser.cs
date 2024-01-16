@@ -133,10 +133,10 @@ public class Parser
         Name = Lexemes[1]
     };
     
-    private EmployeeDto ParseEmployeeDto() => Lexemes.Length < 5 ? new EmployeeDto() : new EmployeeDto(Convert.ToInt32(Lexemes[0]))
+    private EmployeeDto ParseEmployeeDto() => Lexemes.Length < 7 ? new EmployeeDto() : new EmployeeDto(Convert.ToInt32(Lexemes[0]))
     {
-        FullName = Lexemes[1], StoreKey = Convert.ToInt32(Lexemes[2]), PositionKey = Convert.ToInt32(Lexemes[3]),
-        EmploymentDate = DateTime.Parse(Lexemes[4])
+        Surname = Lexemes[1], Name = Lexemes[2], Patronymic = Lexemes[3], StoreKey = Convert.ToInt32(Lexemes[4]),
+        PositionKey = Convert.ToInt32(Lexemes[5]), EmploymentDate = DateTime.Parse(Lexemes[6])
     };
     
     private ManufacturerDto ParseManufacturerDto() => Lexemes.Length < 10 ? new ManufacturerDto() : new ManufacturerDto(Convert.ToInt32(Lexemes[0]))

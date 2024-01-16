@@ -8,7 +8,11 @@ public class EmployeeDto : BaseDto
     
     public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 
-    public string FullName { get; set; } = "NullFullName";
+    public string Surname { get; set; } = "NullSurname";
+
+    public string Name { get; set; } = "NullName";
+
+    public string Patronymic { get; set; } = "NullPatronymic";
 
     public int StoreKey { get; set; } = -1;
 

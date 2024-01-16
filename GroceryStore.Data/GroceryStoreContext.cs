@@ -82,7 +82,9 @@ public sealed class GroceryStoreContext : DbContext
             entity.Property(e => e.Key)
                 .ValueGeneratedNever()
                 .HasColumnName("Код сотрудника");
-            entity.Property(e => e.FullName).HasColumnName("ФИО");
+            entity.Property(e => e.Surname).HasColumnName("Фамилия");
+            entity.Property(e => e.Name).HasColumnName("Имя");
+            entity.Property(e => e.Patronymic).HasColumnName("Отчество");
             entity.Property(e => e.EmploymentDate).HasColumnName("Дата приема на работу");
             entity.Property(e => e.PositionKey).HasColumnName("Код должности");
             entity.Property(e => e.StoreKey).HasColumnName("Код магазина");

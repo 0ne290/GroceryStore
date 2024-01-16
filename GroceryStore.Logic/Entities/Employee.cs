@@ -5,8 +5,12 @@ namespace GroceryStore.Logic.Entities;
 public sealed class Employee : IEntity
 {
     public int Key { get; set; }
+    
+    public string? Surname { get; set; }
 
-    public string? FullName { get; set; }
+    public string? Name { get; set; }
+    
+    public string? Patronymic { get; set; }
 
     public int? StoreKey { get; set; }
 

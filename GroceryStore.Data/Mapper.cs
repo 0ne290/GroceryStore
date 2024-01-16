@@ -38,7 +38,9 @@ public class Mapper
 
     private Employee EmployeeDtoToEmployee(EmployeeDto employeeDto) => new()
     {
-        Key = employeeDto.Key, FullName = employeeDto.FullName == "NullFullName" ? null : employeeDto.FullName,
+        Key = employeeDto.Key, Surname = employeeDto.Surname == "NullSurname" ? null : employeeDto.Surname,
+        Name = employeeDto.Name == "NullName" ? null : employeeDto.Name,
+        Patronymic = employeeDto.Patronymic == "NullPatronymic" ? null : employeeDto.Patronymic,
         StoreKey = employeeDto.StoreKey == -1 ? null : employeeDto.StoreKey,
         PositionKey = employeeDto.PositionKey == -1 ? null : employeeDto.PositionKey,
         EmploymentDate = employeeDto.EmploymentDate == default ? null : employeeDto.EmploymentDate
@@ -164,7 +166,8 @@ public class Mapper
     
     private EmployeeDto EmployeeToEmployeeDto(Employee employee) => new(employee.Key)
     {
-        FullName = employee.FullName ?? "NullFullName", StoreKey = employee.StoreKey ?? -1,
+        Surname = employee.Surname ?? "NullSurname", Name = employee.Name ?? "NullName",
+        Patronymic = employee.Patronymic ?? "NullPatronymic", StoreKey = employee.StoreKey ?? -1,
         PositionKey = employee.PositionKey ?? -1, EmploymentDate = employee.EmploymentDate ?? default
     };
 
