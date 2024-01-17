@@ -13,12 +13,10 @@ internal static class Program
 {
     private static void Main(string[] args)
     {
-        foreach (var arg in args)
-            System.Console.WriteLine(arg);
+        if (args.Length < 3)
+            throw new Exception("Minimum number of arguments 3");
         
-        var connectionString = args.Length > 0
-            ? args[0]
-            : "server=localhost;user=root;password=!EdCbA21435=;database=GroceryStore";
+        var connectionString = args[0];
         
         CompositionRoot(connectionString);
         
