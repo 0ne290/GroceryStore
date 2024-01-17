@@ -52,6 +52,7 @@ public class Controller<TEntity, TDto> : IController where TDto : IDto where TEn
         "GetAll" => GetAll(),
         "GetByKey" => GetByKey(),
         "Update" => Update(),
+        "Remove" => Remove(),
         _ => Default()
     };
 
@@ -104,6 +105,17 @@ public class Controller<TEntity, TDto> : IController where TDto : IDto where TEn
     {
         var dto = (TDto)_parser.Parse(typeof(TDto));
         var ret = _unitOfWork.Update<TEntity, TDto>(dto);
+        ret = ret && _unitOfWork.SaveChanges<TEntity, TDto>();
+                
+        System.Console.WriteLine(ret);
+
+        return ret;
+    }
+    
+    private bool Remove()
+    {
+        var dto = (TDto)_parser.Parse(typeof(TDto));
+        var ret = _unitOfWork.Remove<TEntity, TDto>(dto);
         ret = ret && _unitOfWork.SaveChanges<TEntity, TDto>();
                 
         System.Console.WriteLine(ret);
