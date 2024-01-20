@@ -1,6 +1,6 @@
-﻿using GroceryStore.Data.Interfaces;
+﻿using GroceryStore.Logic.Interfaces;
 
-namespace GroceryStore.Data.Entities;
+namespace GroceryStore.Logic.Entities;
 
 public sealed class Manufacturer : IEntity
 {

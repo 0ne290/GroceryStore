@@ -1,10 +1,10 @@
-using GroceryStore.Data.Interfaces;
+using System.Linq.Expressions;
 using GroceryStore.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data;
 
-public class Dao<TEntity, TDto> : IDao<TDto> where TDto : IDto, new() where TEntity : class, IEntity
+public class Dao<TEntity, TDto> : IDao<TEntity, TDto> where TDto : IDto, new() where TEntity : class, IEntity
 {
     public Dao(GroceryStoreContext dbContext, Mapper mapper)
     {
@@ -23,6 +23,27 @@ public class Dao<TEntity, TDto> : IDao<TDto> where TDto : IDto, new() where TEnt
 
         return true;
     }
+    
+    public IEnumerable<TDto> Get(Expression<Func<TEntity, bool>>? filter = null)//, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "")
+    {
+        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        //foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        //{
+        //    query = query.Include(includeProperty);
+        //}
+        
+        // ReSharper disable once MergeConditionalExpression
+        //var entities = orderBy != null ? orderBy(query).AsNoTracking().AsEnumerable() : query.AsNoTracking().AsEnumerable();
+        
+        var entities = query.AsNoTracking().AsEnumerable();
+        
+        return from entity in entities
+            select (TDto)_mapper.EntityToDto(entity);
+    }
 
     public IEnumerable<TDto> GetAll()
     {
@@ -39,18 +60,28 @@ public class Dao<TEntity, TDto> : IDao<TDto> where TDto : IDto, new() where TEnt
         return entity is null ? new TDto() : (TDto)_mapper.EntityToDto(entity);
     }
 
-    public void Update(TDto dto)
+    public bool Update(TDto dto)
     {
+        if (dto.IsEmpty())
+            return false;
+        
         var entity = _mapper.DtoToEntity(dto);
         
         _dbContext.Set<TEntity>().Update((TEntity)entity);
+
+        return true;
     }
 
-    public void Remove(TDto dto)
+    public bool Remove(TDto dto)
     {
+        if (dto.IsEmpty())
+            return false;
+        
         var entity = _mapper.DtoToEntity(dto);
         
         _dbContext.Set<TEntity>().Remove((TEntity)entity);
+
+        return true;
     }
     
     public bool SaveChanges()

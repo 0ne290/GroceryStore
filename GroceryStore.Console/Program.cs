@@ -1,7 +1,8 @@
 ﻿using GroceryStore.Data;
-using GroceryStore.Data.Entities;
 using GroceryStore.Logic;
 using GroceryStore.Logic.Dto;
+using GroceryStore.Logic.Entities;
+using GroceryStore.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -12,30 +13,17 @@ internal static class Program
 {
     private static void Main(string[] args)
     {
-        var connectionString = args.Length > 0
-            ? args[0]
-            : "server=localhost;user=root;password=!EdCbA21435=;database=GroceryStore";
+        if (args.Length < 3)
+            throw new Exception("Minimum number of arguments 3");
+        
+        var connectionString = args[0];
         
         CompositionRoot(connectionString);
-
-        //var cityDto = new CityDto() { Key = 18, Name = "Abobus", RegionKey = -1 };
-//
-        //_cityService.UpdateCity(cityDto);
-        //
-        //System.Console.WriteLine(_cityService.SaveChanges());
         
-        var countryDto = new CountryDto() { Key = 11, Name = "Russia" };
+        Controller<IEntity, IDto>.ExecuteCommand(args[1..], Services, new Parser(), new Printer());
 
-        Services.Add(countryDto);
-        
-        System.Console.WriteLine(Services.SaveChanges<CountryDto>());
-
-        var countries = Services.GetAll<CountryDto>();
-
-        foreach (var country in countries)
-            System.Console.WriteLine($"Key = {country.Key}; Name = {country.Name}");
-        
-        Services.Dispose();
+        System.Console.Write("Нажмите любую клавишу...");
+        System.Console.ReadKey();
     }
 
     private static void CompositionRoot(string connectionString)
@@ -46,16 +34,36 @@ internal static class Program
             .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             .Options;
 
-        Services.AddService(new Service<CityDto>(
-            new Dao<City, CityDto>(
-                new GroceryStoreContext(options),
-                new Mapper())));
+        var mapper = new Mapper();
 
-        Services.AddService(new Service<CountryDto>(
-            new Dao<Country, CountryDto>(
-                new GroceryStoreContext(options),
-                new Mapper())));
+        Services.AddDao(new Dao<City, CityDto>(new GroceryStoreContext(options), mapper));
+
+        Services.AddDao(new Dao<Country, CountryDto>(new GroceryStoreContext(options), mapper));
+        
+        Services.AddDao(new Dao<Employee, EmployeeDto>(new GroceryStoreContext(options), mapper));
+        
+        Services.AddDao(new Dao<Manufacturer, ManufacturerDto>(new GroceryStoreContext(options), mapper));
+
+        Services.AddDao(new Dao<Position, PositionDto>(new GroceryStoreContext(options), mapper));
+        
+        Services.AddDao(new Dao<Product, ProductDto>(new GroceryStoreContext(options), mapper));
+        
+        Services.AddDao(new Dao<ProductInStore, ProductInStoreDto>(new GroceryStoreContext(options), mapper));
+
+        Services.AddDao(new Dao<ProductInWarehouse, ProductInWarehouseDto>(new GroceryStoreContext(options), mapper));
+        
+        Services.AddDao(new Dao<Region, RegionDto>(new GroceryStoreContext(options), mapper));
+        
+        Services.AddDao(new Dao<RegularCustomer, RegularCustomerDto>(new GroceryStoreContext(options), mapper));
+
+        Services.AddDao(new Dao<Sale, SaleDto>(new GroceryStoreContext(options), mapper));
+        
+        Services.AddDao(new Dao<Store, StoreDto>(new GroceryStoreContext(options), mapper));
+        
+        Services.AddDao(new Dao<Street, StreetDto>(new GroceryStoreContext(options), mapper));
+
+        Services.AddDao(new Dao<Warehouse, WarehouseDto>(new GroceryStoreContext(options), mapper));
     }
 
-    private static readonly ServiceManager Services = new ServiceManager();
+    private static readonly UnitOfWork Services = new UnitOfWork();
 }
