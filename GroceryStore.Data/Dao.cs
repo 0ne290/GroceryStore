@@ -1,108 +1,37 @@
 using System.Linq.Expressions;
+using GroceryStore.Domain.Interfaces;
 using GroceryStore.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data;
 
-public class Dao<TEntity, TDto> : IDao<TEntity, TDto> where TDto : IDto, new() where TEntity : class, IEntity
+public class Dao<TEntity> : IDao<TEntity> where TEntity : class, IEntity
 {
-    public Dao(GroceryStoreContext dbContext, Mapper mapper)
+    public Dao(GroceryStoreContext dbContext)
     {
         _dbContext = dbContext;
-        _mapper = mapper;
+        _dbSet = _dbContext.Set<TEntity>();
     }
 
-    public bool Create(TDto dto)
-    {
-        if (dto.IsEmpty())
-            return false;
-        
-        var entity = (TEntity)_mapper.DtoToEntity(dto);
-
-        _dbContext.Set<TEntity>().Add(entity);
-
-        return true;
-    }
+    public void Create(TEntity entity) => _dbSet.Add(entity);
     
-    public IEnumerable<TDto> Get(Expression<Func<TEntity, bool>>? filter = null)//, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string includeProperties = "")
-    {
-        IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+    public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter) => _dbSet.Where(filter).AsNoTracking().AsEnumerable();
 
-        if (filter != null)
-            query = query.Where(filter);
+    public IEnumerable<TEntity> GetAll() => _dbSet.AsNoTracking().AsEnumerable();
 
-        //foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-        //{
-        //    query = query.Include(includeProperty);
-        //}
-        
-        // ReSharper disable once MergeConditionalExpression
-        //var entities = orderBy != null ? orderBy(query).AsNoTracking().AsEnumerable() : query.AsNoTracking().AsEnumerable();
-        
-        var entities = query.AsNoTracking().AsEnumerable();
-        
-        return from entity in entities
-            select (TDto)_mapper.EntityToDto(entity);
-    }
+    public TEntity? GetByKey(object[] key) => _dbSet.Find(key);
 
-    public IEnumerable<TDto> GetAll()
-    {
-        var entities = _dbContext.Set<TEntity>().AsNoTracking().AsEnumerable();
+    public void Update(TEntity entity) => _dbSet.Update(entity);
 
-        return from entity in entities
-            select (TDto)_mapper.EntityToDto(entity);
-    }
-
-    public TDto GetByKey(object[] key)
-    {
-        var entity = _dbContext.Set<TEntity>().Find(key);
-        
-        return entity is null ? new TDto() : (TDto)_mapper.EntityToDto(entity);
-    }
-
-    public bool Update(TDto dto)
-    {
-        if (dto.IsEmpty())
-            return false;
-        
-        var entity = _mapper.DtoToEntity(dto);
-        
-        _dbContext.Set<TEntity>().Update((TEntity)entity);
-
-        return true;
-    }
-
-    public bool Remove(TDto dto)
-    {
-        if (dto.IsEmpty())
-            return false;
-        
-        var entity = _mapper.DtoToEntity(dto);
-        
-        _dbContext.Set<TEntity>().Remove((TEntity)entity);
-
-        return true;
-    }
+    public void Remove(TEntity entity) => _dbSet.Remove(entity);
     
-    public bool SaveChanges()
-    {
-        try
-        {
-            _dbContext.SaveChanges();
-        }
-        catch
-        {
-            return false;
-        }
-
-        return true;
-    }
+    public int SaveChanges() =>_dbContext.SaveChanges();
     
     public void Dispose() => _dbContext.Dispose();
 
     public async ValueTask DisposeAsync() => await _dbContext.DisposeAsync();
     
     private readonly GroceryStoreContext _dbContext;
-    
-    private readonly Mapper _mapper;
+
+    private readonly DbSet<TEntity> _dbSet;
 }

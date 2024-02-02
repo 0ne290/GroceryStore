@@ -1,4 +1,4 @@
-﻿using GroceryStore.Logic.Interfaces;
+﻿using GroceryStore.Domain.Interfaces;
 
 namespace GroceryStore.Logic.Entities;
 

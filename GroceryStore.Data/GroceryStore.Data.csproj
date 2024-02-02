@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\GroceryStore.Domain\GroceryStore.Domain.csproj" />
       <ProjectReference Include="..\GroceryStore.Logic\GroceryStore.Logic.csproj" />
     </ItemGroup>
 

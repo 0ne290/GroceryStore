@@ -1,7 +1,8 @@
 using System.Linq.Expressions;
+using GroceryStore.Domain.Interfaces;
 using GroceryStore.Logic.Interfaces;
 
-namespace GroceryStore.Logic;
+namespace GroceryStore.Data;
 
 public class UnitOfWork : IUnitOfWork
 {
