@@ -6,7 +6,7 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
     void AddDao<TEntity>(IDao<TEntity> dao) where TEntity : class, IEntity;
 
-    bool Add<TEntity>(TEntity entity) where TEntity : class, IEntity;
+    void Add<TEntity>(TEntity entity) where TEntity : class, IEntity;
     
     IEnumerable<TEntity> Get<TEntity>(Expression<Func<TEntity, bool>> filter) where TEntity : class, IEntity;
 
@@ -17,6 +17,8 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     void Update<TEntity>(TEntity entity) where TEntity : class, IEntity;
     
     void Remove<TEntity>(TEntity entity) where TEntity : class, IEntity;
+    
+    Exception? SaveChanges<TEntity>() where TEntity : class, IEntity;
 
-    IDictionary<Type, Exception?> SaveChanges<TEntity, TDto>() where TEntity : class, IEntity;
+    IDictionary<Type, Exception?> SaveAllChanges();
 }

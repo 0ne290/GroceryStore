@@ -1,47 +1,43 @@
 using System.Linq.Expressions;
 using GroceryStore.Domain.Interfaces;
-using GroceryStore.Logic.Interfaces;
 
 namespace GroceryStore.Data;
 
 public class UnitOfWork : IUnitOfWork
 {
-    public void AddDao<TEntity, TDto>(IDao<TEntity, TDto> dao) where TDto : IDto where TEntity : IEntity =>
-        _daos.Add(typeof(TDto), dao);
+    public void AddDao<TEntity>(IDao<TEntity> dao) where TEntity : class, IEntity => _daos.Add(typeof(TEntity), dao);
 
-    public bool Add<TEntity, TDto>(TDto dto) where TDto : IDto where TEntity : IEntity =>
-        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).Create(dto);
+    public void Add<TEntity>(TEntity entity) where TEntity : class, IEntity => _daos[typeof(TEntity)].Create(entity);
 
-    public IEnumerable<TDto> Get<TEntity, TDto>(Expression<Func<TEntity, bool>>? filter = null)
-        where TDto : IDto where TEntity : IEntity =>
-        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).Get(filter);
+    public IEnumerable<TEntity> Get<TEntity>(Expression<Func<TEntity, bool>> filter) where TEntity : class, IEntity =>
+        _daos[typeof(TEntity)].Get(filter);
 
-    public IEnumerable<TDto> GetAll<TEntity, TDto>() where TDto : IDto where TEntity : IEntity =>
-        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).GetAll();
+    public IEnumerable<TEntity> GetAll<TEntity>() where TEntity : class, IEntity => _daos[typeof(TEntity)].GetAll();
     
-    public TDto GetByKey<TEntity, TDto>(object[] key) where TDto : IDto where TEntity : IEntity =>
-        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).GetByKey(key);
+    public TEntity? GetByKey<TEntity>(object[] key) where TEntity : class, IEntity =>
+        _daos[typeof(TEntity)].GetByKey(key);
 
-    public bool Update<TEntity, TDto>(TDto dto) where TDto : IDto where TEntity : IEntity =>
-        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).Update(dto);
+    public void Update<TEntity>(TEntity entity) where TEntity : class, IEntity => _daos[typeof(TEntity)].Update(entity);
 
-    public bool Remove<TEntity, TDto>(TDto dto) where TDto : IDto where TEntity : IEntity =>
-        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).Remove(dto);
+    public void Remove<TEntity>(TEntity entity) where TEntity : class, IEntity => _daos[typeof(TEntity)].Remove(entity);
+
+    public Exception? SaveChanges<TEntity>() where TEntity : class, IEntity => _daos[typeof(TEntity)].SaveChanges();
     
-    public bool SaveChanges<TEntity, TDto>() where TDto : IDto where TEntity : IEntity =>
-        ((IDao<TEntity, TDto>)_daos[typeof(TDto)]).SaveChanges();
+    public IDictionary<Type, Exception?> SaveAllChanges() =>
+        _daos.ToDictionary<KeyValuePair<Type, dynamic>, Type, Exception?>(typeDaoPair => typeDaoPair.Key, typeDaoPair =>
+            typeDaoPair.Value.SaveChanges());
     
     public void Dispose()
     {
         foreach (var dao in _daos.Values)
-            ((IDisposable)dao).Dispose();
+            dao.Dispose();
     }
 
     public async ValueTask DisposeAsync()
     {
         foreach (var dao in _daos.Values)
-            await ((IAsyncDisposable)dao).DisposeAsync();
+            await dao.DisposeAsync();
     }
 
-    private readonly Dictionary<Type, object> _daos = new();
+    private readonly Dictionary<Type, dynamic> _daos = new();
 }

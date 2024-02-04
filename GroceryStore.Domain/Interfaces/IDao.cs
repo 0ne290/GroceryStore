@@ -16,5 +16,5 @@ public interface IDao<TEntity> : IDisposable, IAsyncDisposable where TEntity : c
 
     void Remove(TEntity entity);
 
-    int SaveChanges();
+    Exception? SaveChanges();
 }

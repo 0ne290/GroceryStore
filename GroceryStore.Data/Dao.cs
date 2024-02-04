@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using GroceryStore.Domain.Interfaces;
-using GroceryStore.Logic.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Data;
@@ -25,7 +24,19 @@ public class Dao<TEntity> : IDao<TEntity> where TEntity : class, IEntity
 
     public void Remove(TEntity entity) => _dbSet.Remove(entity);
     
-    public int SaveChanges() =>_dbContext.SaveChanges();
+    public Exception? SaveChanges()
+    {
+        try
+        {
+            _dbContext.SaveChanges();
+        }
+        catch (Exception e)
+        {
+            return e;
+        }
+
+        return null;
+    }
     
     public void Dispose() => _dbContext.Dispose();
 
