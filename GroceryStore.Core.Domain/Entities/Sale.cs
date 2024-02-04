@@ -1,12 +1,14 @@
-﻿using GroceryStore.Core.Domain.Interfaces;
+﻿namespace GroceryStore.Core.Domain.Entities;
 
-namespace GroceryStore.Core.Domain.Entities;
-
-public sealed class Sale : IEntity
+public sealed class Sale : BaseEntity
 {
-    public int ProductKey { get; set; }
+    public Sale() : base(new int[2]) { }
 
-    public int CustomerKey { get; set; }
+    public override bool IsEmpty() => base.IsEmpty() || Date == default;
+    
+    public int ProductKey { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
+
+    public int CustomerKey { get => PrimaryKey[1]; set => PrimaryKey[1] = value; }
 
     public DateTime Date { get; set; }
 

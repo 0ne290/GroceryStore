@@ -1,10 +1,11 @@
 using System.Linq.Expressions;
+using GroceryStore.Core.Domain.Entities;
 using GroceryStore.Core.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Infrastructure.Data;
 
-public class Dao<TEntity> : IDao<TEntity> where TEntity : class, IEntity
+public class Dao<TEntity> : IDao<TEntity> where TEntity : BaseEntity
 {
     public Dao(GroceryStoreContext dbContext)
     {

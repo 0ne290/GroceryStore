@@ -1,10 +1,10 @@
-﻿using GroceryStore.Core.Domain.Interfaces;
+﻿namespace GroceryStore.Core.Domain.Entities;
 
-namespace GroceryStore.Core.Domain.Entities;
-
-public sealed class Street : IEntity
+public sealed class Street : BaseEntity
 {
-    public int Key { get; set; }
+    public Street() : base(new int[1]) { }
+
+    public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 
     public string? Name { get; set; }
 

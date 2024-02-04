@@ -1,10 +1,10 @@
-﻿using GroceryStore.Core.Domain.Interfaces;
+﻿namespace GroceryStore.Core.Domain.Entities;
 
-namespace GroceryStore.Core.Domain.Entities;
-
-public sealed class Warehouse : IEntity
+public sealed class Warehouse : BaseEntity
 {
-    public int Key { get; set; }
+    public Warehouse() : base(new int[1]) { }
+
+    public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 
     public DateTime? EndOfLease { get; set; }
 

@@ -2,9 +2,7 @@
 
 public sealed class City : BaseEntity
 {
-    public City(int key) : base(new [] { key }) { }
-    
-    public City() : base(new [] { -1 }) { }
+    public City() : base(new int[1]) { }
     
     public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 

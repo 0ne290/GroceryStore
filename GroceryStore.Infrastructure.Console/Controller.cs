@@ -1,8 +1,5 @@
 using System.Linq.Expressions;
-using GroceryStore.Domain.Interfaces;
 using GroceryStore.Core.Application.Dto;
-using GroceryStore.Core.Application.Entities;
-using GroceryStore.Core.Application.Interfaces;
 using GroceryStore.Infrastructure.Console.Interfaces;
 
 namespace GroceryStore.Infrastructure.Console;

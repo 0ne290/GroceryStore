@@ -1,7 +1,5 @@
 using System.Linq.Expressions;
 using GroceryStore.Core.Application.Dto;
-using GroceryStore.Core.Application.Entities;
-using GroceryStore.Core.Application.Interfaces;
 
 namespace GroceryStore.Infrastructure.Console;
 
@@ -9,9 +7,6 @@ public class Parser
 {
     public object ParseFilter(Type type)
     {
-        if (!typeof(IDto).IsAssignableFrom(type))
-            throw new ArgumentException("Parsing filter can only be performed for the IDto type");
-        
         if (type == typeof(EmployeeDto))
             return ParseFilterEmployee();
         if (type == typeof(SaleDto))

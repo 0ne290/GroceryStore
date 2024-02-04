@@ -1,11 +1,11 @@
-﻿using GroceryStore.Core.Domain.Interfaces;
+﻿namespace GroceryStore.Core.Domain.Entities;
 
-namespace GroceryStore.Core.Domain.Entities;
-
-public sealed class Region : IEntity
+public sealed class Region : BaseEntity
 {
-    public int Key { get; set; }
+    public Region() : base(new int[1]) { }
 
+    public int Key { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
+    
     public string? Name { get; set; }
 
     public int? CountryKey { get; set; }

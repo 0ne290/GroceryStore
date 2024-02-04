@@ -1,12 +1,12 @@
-﻿using GroceryStore.Core.Domain.Interfaces;
+﻿namespace GroceryStore.Core.Domain.Entities;
 
-namespace GroceryStore.Core.Domain.Entities;
-
-public sealed class ProductInStore : IEntity
+public sealed class ProductInStore : BaseEntity
 {
-    public int StoreKey { get; set; }
+    public ProductInStore() : base(new int[2]) { }
+    
+    public int StoreKey { get => PrimaryKey[0]; set => PrimaryKey[0] = value; }
 
-    public int ProductKey { get; set; }
+    public int ProductKey { get => PrimaryKey[1]; set => PrimaryKey[1] = value; }
 
     public int? Quantity { get; set; }
 
