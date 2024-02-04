@@ -1,12 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Console", "GroceryStore.Console\GroceryStore.Console.csproj", "{016C949C-0801-45EB-BE36-42B0C759D11E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Infrastructure.Console", "GroceryStore.Infrastructure.Console\GroceryStore.Infrastructure.Console.csproj", "{016C949C-0801-45EB-BE36-42B0C759D11E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Logic", "GroceryStore.Logic\GroceryStore.Logic.csproj", "{B5EAB4FD-D16D-41FA-BC7B-ECA9BE0B11A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Core.Application", "GroceryStore.Core.Application\GroceryStore.Core.Application.csproj", "{B5EAB4FD-D16D-41FA-BC7B-ECA9BE0B11A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Data", "GroceryStore.Data\GroceryStore.Data.csproj", "{DFCA6494-4B90-48EE-9FE1-4C85DC0AA194}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Infrastructure.Data", "GroceryStore.Infrastructure.Data\GroceryStore.Infrastructure.Data.csproj", "{DFCA6494-4B90-48EE-9FE1-4C85DC0AA194}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Domain", "GroceryStore.Domain\GroceryStore.Domain.csproj", "{B8389543-6AFC-495E-9DCC-1FAE1D8A137E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GroceryStore.Core.Domain", "GroceryStore.Core.Domain\GroceryStore.Core.Domain.csproj", "{B8389543-6AFC-495E-9DCC-1FAE1D8A137E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GroceryStore.Core", "GroceryStore.Core", "{229EDDAE-2814-4466-B7D5-3560B745DFF6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{5C902A44-6BD9-4B7E-87B0-1626E8612B77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +34,11 @@ Global
 		{B8389543-6AFC-495E-9DCC-1FAE1D8A137E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8389543-6AFC-495E-9DCC-1FAE1D8A137E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8389543-6AFC-495E-9DCC-1FAE1D8A137E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B5EAB4FD-D16D-41FA-BC7B-ECA9BE0B11A3} = {229EDDAE-2814-4466-B7D5-3560B745DFF6}
+		{B8389543-6AFC-495E-9DCC-1FAE1D8A137E} = {229EDDAE-2814-4466-B7D5-3560B745DFF6}
+		{DFCA6494-4B90-48EE-9FE1-4C85DC0AA194} = {5C902A44-6BD9-4B7E-87B0-1626E8612B77}
+		{016C949C-0801-45EB-BE36-42B0C759D11E} = {5C902A44-6BD9-4B7E-87B0-1626E8612B77}
 	EndGlobalSection
 EndGlobal
