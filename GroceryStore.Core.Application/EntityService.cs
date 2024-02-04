@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using GroceryStore.Core.Domain.Entities;
 using GroceryStore.Core.Domain.Interfaces;
 
 namespace GroceryStore.Core.Application;
@@ -5,11 +7,11 @@ namespace GroceryStore.Core.Application;
 public class EntityService
 {
     public EntityService(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
-    
-    public void Add<TEntity>(TEntity entity) where TEntity : class => _daos[typeof(TEntity)].Create(entity);
 
-    public IEnumerable<TEntity> Get<TEntity>(Expression<Func<TEntity, bool>> filter) where TEntity : class, IEntity =>
-        _daos[typeof(TEntity)].Get(filter);
+    public void Add<TEntity>(TEntity entity) where TEntity : BaseEntity => _unitOfWork.Add(entity);
+
+    public IEnumerable<TEntity> Get<TEntity>(Expression<Func<TEntity, bool>> filter) where TEntity : BaseEntity =>
+        _unitOfWork.Get(filter);
 
     public IEnumerable<TEntity> GetAll<TEntity>() where TEntity : class, IEntity => _daos[typeof(TEntity)].GetAll();
     
