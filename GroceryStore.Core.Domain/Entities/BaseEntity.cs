@@ -1,6 +1,8 @@
+using GroceryStore.Core.Domain.Interfaces;
+
 namespace GroceryStore.Core.Domain.Entities;
 
-public abstract class BaseEntity
+public abstract class BaseEntity : IEntity
 {
     protected BaseEntity(int[] primaryKey) => PrimaryKey = primaryKey;
     

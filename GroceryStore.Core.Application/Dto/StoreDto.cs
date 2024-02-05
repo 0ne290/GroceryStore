@@ -1,14 +1,14 @@
+using GroceryStore.Core.Application.Interfaces;
+
 namespace GroceryStore.Core.Application.Dto;
 
-public class StoreDto : BaseDto
+public class StoreDto : IDto
 {
-    public StoreDto(bool isEmpty = true) : base(isEmpty) { }
-
     public int Key { get; set; }
 
     public DateTime EndOfLease { get; set; }
 
-    public string Contact { get; set; }
+    public string Contact { get; set; } = string.Empty;
 
     public int RegionKey { get; set; }
 
@@ -20,5 +20,7 @@ public class StoreDto : BaseDto
 
     public int HouseNumber { get; set; }
 
-    public string HouseLetter { get; set; }
+    public string HouseLetter { get; set; } = string.Empty;
+    
+    public bool IsEmpty { get; init; }
 }

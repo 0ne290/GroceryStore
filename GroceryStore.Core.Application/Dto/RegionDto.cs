@@ -1,12 +1,14 @@
+using GroceryStore.Core.Application.Interfaces;
+
 namespace GroceryStore.Core.Application.Dto;
 
-public class RegionDto : BaseDto
+public class RegionDto : IDto
 {
-    public RegionDto(bool isEmpty = true) : base(isEmpty) { }
-
     public int Key { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     public int CountryKey { get; set; }
+    
+    public bool IsEmpty { get; init; }
 }

@@ -1,11 +1,13 @@
 using GroceryStore.Core.Application.Dto;
+using GroceryStore.Core.Application.Interfaces;
 using GroceryStore.Core.Domain.Entities;
+using GroceryStore.Core.Domain.Interfaces;
 
 namespace GroceryStore.Core.Application;
 
-public class Mapper
+public class Mapper : IMapper
 {
-    public object EntityToDto(object entity) => entity switch
+    public IDto EntityToDto(IEntity entity) => entity switch
     {
         City city => CityToCityDto(city),
         Country country => CountryToCountryDto(country),
@@ -24,87 +26,93 @@ public class Mapper
         _ => throw new ArgumentException($"There is no corresponding DTO class for the entity \"{entity}\"")
     };
     
-    private CityDto CityToCityDto(City city) => new(city.Key)
+    private CityDto CityToCityDto(City city) => new()
     {
-        Name = city.Name ?? "NullName", RegionKey = city.RegionKey ?? -1
+        Key = city.Key, Name = city.Name ?? string.Empty, RegionKey = city.RegionKey ?? default
     };
     
-    private CountryDto CountryToCountryDto(Country country) => new(country.Key)
+    private CountryDto CountryToCountryDto(Country country) => new()
     {
-        Name = country.Name ?? "NullName"
+        Key = country.Key, Name = country.Name ?? string.Empty
     };
     
-    private EmployeeDto EmployeeToEmployeeDto(Employee employee) => new(employee.Key)
+    private EmployeeDto EmployeeToEmployeeDto(Employee employee) => new()
     {
-        Surname = employee.Surname ?? "NullSurname", Name = employee.Name ?? "NullName",
-        Patronymic = employee.Patronymic ?? "NullPatronymic", StoreKey = employee.StoreKey ?? -1,
-        PositionKey = employee.PositionKey ?? -1, EmploymentDate = employee.EmploymentDate ?? default
+        Key = employee.Key, Surname = employee.Surname ?? string.Empty, Name = employee.Name ?? string.Empty,
+        Patronymic = employee.Patronymic ?? string.Empty, StoreKey = employee.StoreKey ?? default,
+        PositionKey = employee.PositionKey ?? default, EmploymentDate = employee.EmploymentDate ?? default
     };
 
-    private ManufacturerDto ManufacturerToManufacturerDto(Manufacturer manufacturer) => new(manufacturer.Key)
+    private ManufacturerDto ManufacturerToManufacturerDto(Manufacturer manufacturer) => new()
     {
-        Name = manufacturer.Name ?? "NullName", Contact = manufacturer.Contact ?? "NullContact",
-        CountryKey = manufacturer.CountryKey ?? -1, RegionKey = manufacturer.RegionKey ?? -1,
-        CityKey = manufacturer.CityKey ?? -1, StreetKey = manufacturer.StreetKey ?? -1,
-        Postcode = manufacturer.Postcode ?? -1, HouseNumber = manufacturer.HouseNumber ?? -1,
-        HouseLetter = manufacturer.HouseLetter ?? "NullHouseLetter"
+        Key = manufacturer.Key, Name = manufacturer.Name ?? string.Empty,
+        Contact = manufacturer.Contact ?? string.Empty, CountryKey = manufacturer.CountryKey ?? default,
+        RegionKey = manufacturer.RegionKey ?? default, CityKey = manufacturer.CityKey ?? default,
+        StreetKey = manufacturer.StreetKey ?? default, Postcode = manufacturer.Postcode ?? default,
+        HouseNumber = manufacturer.HouseNumber ?? default, HouseLetter = manufacturer.HouseLetter ?? string.Empty
     };
     
-    private PositionDto PositinToPositionDto(Position position) => new(position.Key)
+    private PositionDto PositinToPositionDto(Position position) => new()
     {
-        Name = position.Name ?? "NullName"
+        Key = position.Key, Name = position.Name ?? string.Empty
     };
     
-    private ProductDto ProductToProductDto(Product product) => new(product.Key)
+    private ProductDto ProductToProductDto(Product product) => new()
     {
-        Name = product.Name ?? "NullName", DegreeOfProcessing = product.DegreeOfProcessing ?? "NullDegreeOfProcessing",
-        ManufacturerKey = product.ManufacturerKey ?? -1, BestBefore = product.BestBefore ?? -1
+        Key = product.Key, Name = product.Name ?? string.Empty,
+        DegreeOfProcessing = product.DegreeOfProcessing ?? string.Empty,
+        ManufacturerKey = product.ManufacturerKey ?? default, BestBefore = product.BestBefore ?? default
     };
     
-    private ProductInStoreDto ProductInStoreToProductInStoreDto(ProductInStore productInStore) => new(productInStore.StoreKey, productInStore.ProductKey)
+    private ProductInStoreDto ProductInStoreToProductInStoreDto(ProductInStore productInStore) => new()
     {
-        Quantity = productInStore.Quantity ?? -1, WarehouseKey = productInStore.WarehouseKey ?? -1
+        StoreKey = productInStore.StoreKey, ProductKey = productInStore.ProductKey,
+        Quantity = productInStore.Quantity ?? default, WarehouseKey = productInStore.WarehouseKey ?? default
     };
     
-    private ProductInWarehouseDto ProductInWarehouseToProductInWarehouseDto(ProductInWarehouse productInWarehouse) => new(productInWarehouse.WarehouseKey, productInWarehouse.ProductKey)
+    private ProductInWarehouseDto ProductInWarehouseToProductInWarehouseDto(ProductInWarehouse productInWarehouse) =>
+        new()
     {
-        Quantity = productInWarehouse.Quantity ?? -1, DateOfManufacture = productInWarehouse.DateOfManufacture ?? default
+        WarehouseKey = productInWarehouse.WarehouseKey, ProductKey = productInWarehouse.ProductKey,
+        Quantity = productInWarehouse.Quantity ?? default,
+        DateOfManufacture = productInWarehouse.DateOfManufacture ?? default
     };
     
-    private RegionDto RegionToRegionDto(Region region) => new(region.Key)
+    private RegionDto RegionToRegionDto(Region region) => new()
     {
-        Name = region.Name ?? "NullName", CountryKey = region.CountryKey ?? -1
+        Key = region.Key, Name = region.Name ?? string.Empty, CountryKey = region.CountryKey ?? default
     };
     
-    private RegularCustomerDto RegularCustomerToRegularCustomerDto(RegularCustomer regularCustomer) => new(regularCustomer.Key)
+    private RegularCustomerDto RegularCustomerToRegularCustomerDto(RegularCustomer regularCustomer) => new()
     {
-        Name = regularCustomer.Name ?? "NullName", Address = regularCustomer.Address ?? "NullAddress",
-        PhoneNumber = regularCustomer.PhoneNumber ?? "NullPhoneNumber"
+        Key = regularCustomer.Key, Name = regularCustomer.Name ?? string.Empty,
+        Address = regularCustomer.Address ?? string.Empty, PhoneNumber = regularCustomer.PhoneNumber ?? string.Empty
     };
     
-    private SaleDto SaleToSaleDto(Sale sale) => new(sale.ProductKey, sale.CustomerKey, sale.Date)
+    private SaleDto SaleToSaleDto(Sale sale) => new()
     {
-        Quantity = sale.Quantity ?? -1
+        ProductKey = sale.ProductKey, CustomerKey = sale.CustomerKey, Date = sale.Date,
+        Quantity = sale.Quantity ?? default
     };
     
-    private StoreDto StoreToStoreDto(Store store) => new(store.Key)
+    private StoreDto StoreToStoreDto(Store store) => new()
     {
-        EndOfLease = store.EndOfLease ?? default, Contact = store.Contact ?? "NullContact",
-        RegionKey = store.RegionKey ?? -1, CityKey = store.CityKey ?? -1, StreetKey = store.StreetKey ?? -1,
-        Postcode = store.Postcode ?? -1, HouseNumber = store.HouseNumber ?? -1,
-        HouseLetter = store.HouseLetter ?? "NullHouseLetter"
+        Key = store.Key, EndOfLease = store.EndOfLease ?? default, Contact = store.Contact ?? string.Empty,
+        RegionKey = store.RegionKey ?? default, CityKey = store.CityKey ?? default,
+        StreetKey = store.StreetKey ?? default, Postcode = store.Postcode ?? default,
+        HouseNumber = store.HouseNumber ?? default, HouseLetter = store.HouseLetter ?? string.Empty
     };
     
-    private StreetDto StreetToStreetDto(Street street) => new(street.Key)
+    private StreetDto StreetToStreetDto(Street street) => new()
     {
-        Name = street.Name ?? "NullName", CityKey = street.CityKey ?? -1
+        Key = street.Key, Name = street.Name ?? string.Empty, CityKey = street.CityKey ?? default
     };
     
-    private WarehouseDto WarehouseToWarehouseDto(Warehouse warehouse) => new(warehouse.Key)
+    private WarehouseDto WarehouseToWarehouseDto(Warehouse warehouse) => new()
     {
-        EndOfLease = warehouse.EndOfLease ?? default, Contact = warehouse.Contact ?? "NullContact",
-        RegionKey = warehouse.RegionKey ?? -1, CityKey = warehouse.CityKey ?? -1, StreetKey = warehouse.StreetKey ?? -1,
-        Postcode = warehouse.Postcode ?? -1, HouseNumber = warehouse.HouseNumber ?? -1,
-        HouseLetter = warehouse.HouseLetter ?? "NullHouseLetter"
+        Key = warehouse.Key, EndOfLease = warehouse.EndOfLease ?? default, Contact = warehouse.Contact ?? string.Empty,
+        RegionKey = warehouse.RegionKey ?? default, CityKey = warehouse.CityKey ?? default,
+        StreetKey = warehouse.StreetKey ?? default, Postcode = warehouse.Postcode ?? default,
+        HouseNumber = warehouse.HouseNumber ?? default, HouseLetter = warehouse.HouseLetter ?? string.Empty
     };
 }

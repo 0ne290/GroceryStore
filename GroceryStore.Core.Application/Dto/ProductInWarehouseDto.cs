@@ -1,9 +1,9 @@
+using GroceryStore.Core.Application.Interfaces;
+
 namespace GroceryStore.Core.Application.Dto;
 
-public class ProductInWarehouseDto : BaseDto
+public class ProductInWarehouseDto : IDto
 {
-    public ProductInWarehouseDto(bool isEmpty = true) : base(isEmpty) { }
-    
     public int WarehouseKey { get; set; }
 
     public int ProductKey { get; set; }
@@ -11,4 +11,6 @@ public class ProductInWarehouseDto : BaseDto
     public int Quantity { get; set; }
 
     public DateTime DateOfManufacture { get; set; }
+    
+    public bool IsEmpty { get; init; }
 }

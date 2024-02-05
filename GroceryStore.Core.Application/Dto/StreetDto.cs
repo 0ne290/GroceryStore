@@ -1,12 +1,14 @@
+using GroceryStore.Core.Application.Interfaces;
+
 namespace GroceryStore.Core.Application.Dto;
 
-public class StreetDto : BaseDto
+public class StreetDto : IDto
 {
-    public StreetDto(bool isEmpty = true) : base(isEmpty) { }
-
     public int Key { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     public int CityKey { get; set; }
+    
+    public bool IsEmpty { get; init; }
 }

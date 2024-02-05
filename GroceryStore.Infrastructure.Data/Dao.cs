@@ -1,13 +1,12 @@
 using System.Linq.Expressions;
-using GroceryStore.Core.Domain.Entities;
 using GroceryStore.Core.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace GroceryStore.Infrastructure.Data;
 
-public class Dao<TEntity> : IDao<TEntity> where TEntity : BaseEntity
+public class Dao<TEntity> : IDao<TEntity> where TEntity : class, IEntity
 {
-    public Dao(GroceryStoreContext dbContext)
+    public Dao(DbContext dbContext)
     {
         _dbContext = dbContext;
         _dbSet = _dbContext.Set<TEntity>();
@@ -43,7 +42,7 @@ public class Dao<TEntity> : IDao<TEntity> where TEntity : BaseEntity
 
     public async ValueTask DisposeAsync() => await _dbContext.DisposeAsync();
     
-    private readonly GroceryStoreContext _dbContext;
+    private readonly DbContext _dbContext;
 
     private readonly DbSet<TEntity> _dbSet;
 }

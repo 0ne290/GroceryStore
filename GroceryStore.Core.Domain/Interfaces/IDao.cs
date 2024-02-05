@@ -1,9 +1,8 @@
 using System.Linq.Expressions;
-using GroceryStore.Core.Domain.Entities;
 
 namespace GroceryStore.Core.Domain.Interfaces;
 
-public interface IDao<TEntity> : IDisposable, IAsyncDisposable where TEntity : BaseEntity
+public interface IDao<TEntity> : IDisposable, IAsyncDisposable where TEntity : class, IEntity
 {
     void Create(TEntity entity);
 

@@ -1,10 +1,12 @@
+using GroceryStore.Core.Application.Interfaces;
+
 namespace GroceryStore.Core.Application.Dto;
 
-public class PositionDto : BaseDto
+public class PositionDto : IDto
 {
-    public PositionDto(bool isEmpty = true) : base(isEmpty) { }
-
     public int Key { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
+    
+    public bool IsEmpty { get; init; }
 }

@@ -10,8 +10,4 @@
       <ProjectReference Include="..\GroceryStore.Core.Domain\GroceryStore.Core.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Interfaces\" />
-    </ItemGroup>
-
 </Project>
