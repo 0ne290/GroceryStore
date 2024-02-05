@@ -1,5 +1,8 @@
 using System.Linq.Expressions;
 using GroceryStore.Core.Application.Dto;
+using GroceryStore.Core.Application.Interfaces;
+using GroceryStore.Core.Domain.Entities;
+using GroceryStore.Core.Domain.Interfaces;
 
 namespace GroceryStore.Infrastructure.Console;
 
@@ -51,12 +54,12 @@ public class Parser
         if (type == typeof(ProductInWarehouseDto))
             return ParseIntKey(2);
         if (type == typeof(SaleDto))
-            return ParseKeySaleDto();
+            return ParseKeySale();
         
         return ParseIntKey(1);
     }
     
-    private object[] ParseKeySaleDto()
+    private object[] ParseKeySale()
     {
         if (Lexemes.Length < 3)
             return Array.Empty<object>();
@@ -81,120 +84,124 @@ public class Parser
         return ret;
     }
     
-    public IDto Parse(Type type)
+    public IEntity Parse(Type type)
     {
-        if (!typeof(IDto).IsAssignableFrom(type))
-            throw new ArgumentException("Parsing can only be performed for the IDto type");
-        
-        if (type == typeof(CityDto))
-            return ParseCityDto();
-        if (type == typeof(CountryDto))
-            return ParseCountryDto();
-        if (type == typeof(EmployeeDto))
-            return ParseEmployeeDto();
-        if (type == typeof(ManufacturerDto))
-            return ParseManufacturerDto();
-        if (type == typeof(PositionDto))
-            return ParsePositionDto();
-        if (type == typeof(ProductDto))
-            return ParseProductDto();
-        if (type == typeof(ProductInStoreDto))
-            return ParseProductInStoreDto();
-        if (type == typeof(ProductInWarehouseDto))
-            return ParseProductInWarehouseDto();
-        if (type == typeof(RegionDto))
-            return ParseRegionDto();
-        if (type == typeof(RegularCustomerDto))
-            return ParseRegularCustomerDto();
-        if (type == typeof(SaleDto))
-            return ParseSaleDto();
-        if (type == typeof(StoreDto))
-            return ParseStoreDto();
-        if (type == typeof(StreetDto))
-            return ParseStreetDto();
-        if (type == typeof(WarehouseDto))
-            return ParseWarehouseDto();
+        if (type == typeof(City))
+            return ParseCity();
+        if (type == typeof(Country))
+            return ParseCountry();
+        if (type == typeof(Employee))
+            return ParseEmployee();
+        if (type == typeof(Manufacturer))
+            return ParseManufacturer();
+        if (type == typeof(Position))
+            return ParsePosition();
+        if (type == typeof(Product))
+            return ParseProduct();
+        if (type == typeof(ProductInStore))
+            return ParseProductInStore();
+        if (type == typeof(ProductInWarehouse))
+            return ParseProductInWarehouse();
+        if (type == typeof(Region))
+            return ParseRegion();
+        if (type == typeof(RegularCustomer))
+            return ParseRegularCustomer();
+        if (type == typeof(Sale))
+            return ParseSale();
+        if (type == typeof(Store))
+            return ParseStore();
+        if (type == typeof(Street))
+            return ParseStreet();
+        if (type == typeof(Warehouse))
+            return ParseWarehouse();
         
         throw new ArgumentException($"Type {type} is not yet supported for parsing");
     }
 
-    private CityDto ParseCityDto() => Lexemes.Length < 3 ? new CityDto() : new CityDto(Convert.ToInt32(Lexemes[0]))
+    private City ParseCity() => Lexemes.Length < 3 ? new City() : new City
     {
-        Name = Lexemes[1], RegionKey = Convert.ToInt32(Lexemes[2])
+        Key = Convert.ToInt32(Lexemes[0]), Name = Lexemes[1], RegionKey = Convert.ToInt32(Lexemes[2])
     };
     
-    private CountryDto ParseCountryDto() => Lexemes.Length < 2 ? new CountryDto() : new CountryDto(Convert.ToInt32(Lexemes[0]))
+    private Country ParseCountry() => Lexemes.Length < 2 ? new Country() : new Country
     {
-        Name = Lexemes[1]
+        Key = Convert.ToInt32(Lexemes[0]), Name = Lexemes[1]
     };
     
-    private EmployeeDto ParseEmployeeDto() => Lexemes.Length < 7 ? new EmployeeDto() : new EmployeeDto(Convert.ToInt32(Lexemes[0]))
+    private Employee ParseEmployee() => Lexemes.Length < 7 ? new Employee() : new Employee
     {
-        Surname = Lexemes[1], Name = Lexemes[2], Patronymic = Lexemes[3], StoreKey = Convert.ToInt32(Lexemes[4]),
-        PositionKey = Convert.ToInt32(Lexemes[5]), EmploymentDate = DateTime.Parse(Lexemes[6])
+        Key = Convert.ToInt32(Lexemes[0]), Surname = Lexemes[1], Name = Lexemes[2], Patronymic = Lexemes[3],
+        StoreKey = Convert.ToInt32(Lexemes[4]), PositionKey = Convert.ToInt32(Lexemes[5]),
+        EmploymentDate = DateTime.Parse(Lexemes[6])
     };
     
-    private ManufacturerDto ParseManufacturerDto() => Lexemes.Length < 10 ? new ManufacturerDto() : new ManufacturerDto(Convert.ToInt32(Lexemes[0]))
+    private Manufacturer ParseManufacturer() => Lexemes.Length < 10 ? new Manufacturer() : new Manufacturer
     {
-        Name = Lexemes[1], Contact = Lexemes[2], CountryKey = Convert.ToInt32(Lexemes[3]),
-        RegionKey = Convert.ToInt32(Lexemes[4]), CityKey = Convert.ToInt32(Lexemes[5]),
-        StreetKey = Convert.ToInt32(Lexemes[6]), Postcode = Convert.ToInt32(Lexemes[7]),
-        HouseNumber = Convert.ToInt32(Lexemes[8]), HouseLetter = Lexemes[9]
+        Key = Convert.ToInt32(Lexemes[0]), Name = Lexemes[1], Contact = Lexemes[2],
+        CountryKey = Convert.ToInt32(Lexemes[3]), RegionKey = Convert.ToInt32(Lexemes[4]),
+        CityKey = Convert.ToInt32(Lexemes[5]), StreetKey = Convert.ToInt32(Lexemes[6]),
+        Postcode = Convert.ToInt32(Lexemes[7]), HouseNumber = Convert.ToInt32(Lexemes[8]), HouseLetter = Lexemes[9]
     };
     
-    private PositionDto ParsePositionDto() => Lexemes.Length < 2 ? new PositionDto() : new PositionDto(Convert.ToInt32(Lexemes[0]))
+    private Position ParsePosition() => Lexemes.Length < 2 ? new Position() : new Position
     {
-        Name = Lexemes[1]
+        Key = Convert.ToInt32(Lexemes[0]), Name = Lexemes[1]
     };
     
-    private ProductDto ParseProductDto() => Lexemes.Length < 5 ? new ProductDto() : new ProductDto(Convert.ToInt32(Lexemes[0]))
+    private Product ParseProduct() => Lexemes.Length < 5 ? new Product() : new Product
     {
-        Name = Lexemes[1], DegreeOfProcessing = Lexemes[2], ManufacturerKey = Convert.ToInt32(Lexemes[3]),
-        BestBefore = Convert.ToInt32(Lexemes[4])
+        Key = Convert.ToInt32(Lexemes[0]), Name = Lexemes[1], DegreeOfProcessing = Lexemes[2],
+        ManufacturerKey = Convert.ToInt32(Lexemes[3]), BestBefore = Convert.ToInt32(Lexemes[4])
     };
     
-    private ProductInStoreDto ParseProductInStoreDto() => Lexemes.Length < 4 ? new ProductInStoreDto() : new ProductInStoreDto(Convert.ToInt32(Lexemes[0]), Convert.ToInt32(Lexemes[1]))
+    private ProductInStore ParseProductInStore() => Lexemes.Length < 4 ? new ProductInStore() : new ProductInStore
     {
+        StoreKey = Convert.ToInt32(Lexemes[0]), ProductKey = Convert.ToInt32(Lexemes[1]),
         Quantity = Convert.ToInt32(Lexemes[2]), WarehouseKey = Convert.ToInt32(Lexemes[3])
     };
     
-    private ProductInWarehouseDto ParseProductInWarehouseDto() => Lexemes.Length < 4 ? new ProductInWarehouseDto() : new ProductInWarehouseDto(Convert.ToInt32(Lexemes[0]), Convert.ToInt32(Lexemes[1]))
+    private ProductInWarehouse ParseProductInWarehouse() => Lexemes.Length < 4 ? new ProductInWarehouse()
+        : new ProductInWarehouse
     {
+        WarehouseKey = Convert.ToInt32(Lexemes[0]), ProductKey = Convert.ToInt32(Lexemes[1]),
         Quantity = Convert.ToInt32(Lexemes[2]), DateOfManufacture = DateTime.Parse(Lexemes[3])
     };
     
-    private RegionDto ParseRegionDto() => Lexemes.Length < 3 ? new RegionDto() : new RegionDto(Convert.ToInt32(Lexemes[0]))
+    private Region ParseRegion() => Lexemes.Length < 3 ? new Region() : new Region
     {
-        Name = Lexemes[1], CountryKey = Convert.ToInt32(Lexemes[2])
+        Key = Convert.ToInt32(Lexemes[0]), Name = Lexemes[1], CountryKey = Convert.ToInt32(Lexemes[2])
     };
     
-    private RegularCustomerDto ParseRegularCustomerDto() => Lexemes.Length < 4 ? new RegularCustomerDto() : new RegularCustomerDto(Convert.ToInt32(Lexemes[0]))
+    private RegularCustomer ParseRegularCustomer() => Lexemes.Length < 4 ? new RegularCustomer() : new RegularCustomer
     {
-        Name = Lexemes[1], Address = Lexemes[2], PhoneNumber = Lexemes[3]
+        Key = Convert.ToInt32(Lexemes[0]), Name = Lexemes[1], Address = Lexemes[2], PhoneNumber = Lexemes[3]
     };
     
-    private SaleDto ParseSaleDto() => Lexemes.Length < 4 ? new SaleDto() : new SaleDto(Convert.ToInt32(Lexemes[0]), Convert.ToInt32(Lexemes[1]), DateTime.Parse(Lexemes[2]))
+    private Sale ParseSale() => Lexemes.Length < 4 ? new Sale() : new Sale
     {
-        Quantity = Convert.ToInt32(Lexemes[3])
+        ProductKey = Convert.ToInt32(Lexemes[0]), CustomerKey = Convert.ToInt32(Lexemes[1]),
+        Date = DateTime.Parse(Lexemes[2]), Quantity = Convert.ToInt32(Lexemes[3])
     };
     
-    private StoreDto ParseStoreDto() => Lexemes.Length < 9 ? new StoreDto() : new StoreDto(Convert.ToInt32(Lexemes[0]))
+    private Store ParseStore() => Lexemes.Length < 9 ? new Store() : new Store
     {
-        EndOfLease = DateTime.Parse(Lexemes[1]), Contact = Lexemes[2], RegionKey = Convert.ToInt32(Lexemes[3]),
-        CityKey = Convert.ToInt32(Lexemes[4]), StreetKey = Convert.ToInt32(Lexemes[5]),
-        Postcode = Convert.ToInt32(Lexemes[6]), HouseNumber = Convert.ToInt32(Lexemes[7]), HouseLetter = Lexemes[8]
+        Key = Convert.ToInt32(Lexemes[0]), EndOfLease = DateTime.Parse(Lexemes[1]), Contact = Lexemes[2],
+        RegionKey = Convert.ToInt32(Lexemes[3]), CityKey = Convert.ToInt32(Lexemes[4]),
+        StreetKey = Convert.ToInt32(Lexemes[5]), Postcode = Convert.ToInt32(Lexemes[6]),
+        HouseNumber = Convert.ToInt32(Lexemes[7]), HouseLetter = Lexemes[8]
     };
     
-    private StreetDto ParseStreetDto() => Lexemes.Length < 3 ? new StreetDto() : new StreetDto(Convert.ToInt32(Lexemes[0]))
+    private Street ParseStreet() => Lexemes.Length < 3 ? new Street() : new Street
     {
-        Name = Lexemes[1], CityKey = Convert.ToInt32(Lexemes[2])
+        Key = Convert.ToInt32(Lexemes[0]), Name = Lexemes[1], CityKey = Convert.ToInt32(Lexemes[2])
     };
     
-    private WarehouseDto ParseWarehouseDto() => Lexemes.Length < 9 ? new WarehouseDto() : new WarehouseDto(Convert.ToInt32(Lexemes[0]))
+    private Warehouse ParseWarehouse() => Lexemes.Length < 9 ? new Warehouse() : new Warehouse
     {
-        EndOfLease = DateTime.Parse(Lexemes[1]), Contact = Lexemes[2], RegionKey = Convert.ToInt32(Lexemes[3]),
-        CityKey = Convert.ToInt32(Lexemes[4]), StreetKey = Convert.ToInt32(Lexemes[5]),
-        Postcode = Convert.ToInt32(Lexemes[6]), HouseNumber = Convert.ToInt32(Lexemes[7]), HouseLetter = Lexemes[8]
+        Key = Convert.ToInt32(Lexemes[0]), EndOfLease = DateTime.Parse(Lexemes[1]), Contact = Lexemes[2],
+        RegionKey = Convert.ToInt32(Lexemes[3]), CityKey = Convert.ToInt32(Lexemes[4]),
+        StreetKey = Convert.ToInt32(Lexemes[5]), Postcode = Convert.ToInt32(Lexemes[6]),
+        HouseNumber = Convert.ToInt32(Lexemes[7]), HouseLetter = Lexemes[8]
     };
 
     public string[] Lexemes { get; set; } = Array.Empty<string>();

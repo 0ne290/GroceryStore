@@ -1,65 +1,45 @@
 using System.Linq.Expressions;
-using GroceryStore.Core.Application.Dto;
+using GroceryStore.Core.Application.Interfaces;
+using GroceryStore.Core.Domain.Interfaces;
 using GroceryStore.Infrastructure.Console.Interfaces;
 
 namespace GroceryStore.Infrastructure.Console;
 
-public class Controller<TEntity, TDto> : IController where TDto : IDto where TEntity : IEntity
+public class Controller<TEntity, TDto> : IController where TEntity : class, IEntity where TDto : IDto, new()
 {
-    public static void ExecuteCommand(string[] command, IUnitOfWork unitOfWork, Parser parser, Printer printer)
-    {
-        var controller = CreateController(command, unitOfWork, parser, printer);
-
-        controller.ExecuteCommand();
-    }
-
-    private static IController CreateController(string[] command, IUnitOfWork unitOfWork, Parser parser,
-        Printer printer) =>
-        command[0] switch
-        {
-            "City" => new Controller<City, CityDto>(command[1..], unitOfWork, parser, printer),
-            "Country" => new Controller<Country, CountryDto>(command[1..], unitOfWork, parser, printer),
-            "Employee" => new Controller<Employee, EmployeeDto>(command[1..], unitOfWork, parser, printer),
-            "Manufacturer" => new Controller<Manufacturer, ManufacturerDto>(command[1..], unitOfWork, parser, printer),
-            "Position" => new Controller<Position, PositionDto>(command[1..], unitOfWork, parser, printer),
-            "Product" => new Controller<Product, ProductDto>(command[1..], unitOfWork, parser, printer),
-            "ProductInStore" => new Controller<ProductInStore, ProductInStoreDto>(command[1..], unitOfWork, parser, printer),
-            "ProductInWarehouse" => new Controller<ProductInWarehouse, ProductInWarehouseDto>(command[1..], unitOfWork, parser, printer),
-            "Region" => new Controller<Region, RegionDto>(command[1..], unitOfWork, parser, printer),
-            "RegularCustomer" => new Controller<RegularCustomer, RegularCustomerDto>(command[1..], unitOfWork, parser, printer),
-            "Sale" => new Controller<Sale, SaleDto>(command[1..], unitOfWork, parser, printer),
-            "Store" => new Controller<Store, StoreDto>(command[1..], unitOfWork, parser, printer),
-            "Street" => new Controller<Street, StreetDto>(command[1..], unitOfWork, parser, printer),
-            "Warehouse" => new Controller<Warehouse, WarehouseDto>(command[1..], unitOfWork, parser, printer),
-            _ => throw new Exception("Unable to select database entity. Invalid value entered")
-        };
-    
-    private Controller(string[] command, IUnitOfWork unitOfWork, Parser parser, Printer printer)
+    public Controller(string[] command, IEntityService entityService, Parser parser, Printer printer)
     {
         _command = command;
-        _unitOfWork = unitOfWork;
+        _entityService = entityService;
         _parser = parser;
         _parser.Lexemes = _command[1..];
         _printer = printer;
     }
 
-    public bool ExecuteCommand() => _command[0] switch
+    public bool ExecuteCommand()
     {
-        "Add" => Add(),
-        "GetByCriterion" => GetByCriterion(),
-        "GetAll" => GetAll(),
-        "GetByKey" => GetByKey(),
-        "Update" => Update(),
-        "Remove" => Remove(),
-        _ => Default()
-    };
+        System.Console.WriteLine("Ждем 10 секунд");
+        Thread.Sleep(10000);
+        System.Console.WriteLine("Закончили ждать 10 секунд");
+
+        return _command[0] switch
+        {
+            "Add" => Add(),
+            "GetByCriterion" => GetByCriterion(),
+            "GetAll" => GetAll(),
+            "GetByKey" => GetByKey(),
+            "Update" => Update(),
+            "Remove" => Remove(),
+            _ => Default()
+        };
+    }
 
     private bool GetByCriterion()
     {
         var filter = (Expression<Func<TEntity, bool>>)_parser.ParseFilter(typeof(TDto));
         //var orderBy = _parser.ParseSorting(typeof(TDto));
 
-        var dtos = _unitOfWork.Get<TEntity, TDto>(filter);
+        var dtos = _entityService.Get<TEntity, TDto>(filter);
 
         foreach (var dto in dtos)
             _printer.Print(new[] { dto });
@@ -69,18 +49,20 @@ public class Controller<TEntity, TDto> : IController where TDto : IDto where TEn
 
     private bool Add()
     {
-        var dto = (TDto)_parser.Parse(typeof(TDto));
-        var ret = _unitOfWork.Add<TEntity, TDto>(dto);
-        ret = ret && _unitOfWork.SaveChanges<TEntity, TDto>();
+        var entity = (TEntity)_parser.Parse(typeof(TEntity));
+        
+        var result = _entityService.Add(entity);
+        
+        var exception = _entityService.SaveChanges<TEntity>();
                 
-        System.Console.WriteLine(ret);
+        System.Console.WriteLine($"{result}. {exception?.Message ?? ""}");
 
-        return ret;
+        return result;
     }
 
     private bool GetAll()
     {
-        var dtos = _unitOfWork.GetAll<TEntity, TDto>();
+        var dtos = _entityService.GetAll<TEntity, TDto>();
 
         _printer.Print(dtos);
 
@@ -89,36 +71,42 @@ public class Controller<TEntity, TDto> : IController where TDto : IDto where TEn
     
     private bool GetByKey()
     {
-        var key = _parser.ParseKey(typeof(TDto));
-        var dto = _unitOfWork.GetByKey<TEntity, TDto>(key);
-        var ret = !dto.IsEmpty();
+        var key = _parser.ParseKey(typeof(TEntity));
+        
+        var dto = _entityService.GetByKey<TEntity, TDto>(key);
+        
+        var result = !dto.IsEmpty;
 
-        if (ret)
+        if (result)
             _printer.Print(new[] { dto });
 
-        return ret;
+        return result;
     }
 
     private bool Update()
     {
-        var dto = (TDto)_parser.Parse(typeof(TDto));
-        var ret = _unitOfWork.Update<TEntity, TDto>(dto);
-        ret = ret && _unitOfWork.SaveChanges<TEntity, TDto>();
+        var entity = (TEntity)_parser.Parse(typeof(TEntity));
+        
+        var result = _entityService.Update(entity);
+        
+        var exception = _entityService.SaveChanges<TEntity>();
                 
-        System.Console.WriteLine(ret);
+        System.Console.WriteLine($"{result}. {exception?.Message ?? ""}");
 
-        return ret;
+        return result;
     }
     
     private bool Remove()
     {
-        var dto = (TDto)_parser.Parse(typeof(TDto));
-        var ret = _unitOfWork.Remove<TEntity, TDto>(dto);
-        ret = ret && _unitOfWork.SaveChanges<TEntity, TDto>();
+        var entity = (TEntity)_parser.Parse(typeof(TEntity));
+        
+        var result = _entityService.Remove(entity);
+        
+        var exception = _entityService.SaveChanges<TEntity>();
                 
-        System.Console.WriteLine(ret);
+        System.Console.WriteLine($"{result}. {exception?.Message ?? ""}");
 
-        return ret;
+        return result;
     }
 
     private bool Default()
@@ -134,5 +122,5 @@ public class Controller<TEntity, TDto> : IController where TDto : IDto where TEn
 
     private readonly Printer _printer;
 
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IEntityService _entityService;
 }

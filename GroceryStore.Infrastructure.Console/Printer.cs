@@ -1,4 +1,5 @@
 using GroceryStore.Core.Application.Dto;
+using GroceryStore.Core.Application.Interfaces;
 
 namespace GroceryStore.Infrastructure.Console;
 

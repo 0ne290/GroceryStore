@@ -1,7 +1,5 @@
 using System.Linq.Expressions;
-using GroceryStore.Core.Application.Dto;
 using GroceryStore.Core.Application.Interfaces;
-using GroceryStore.Core.Domain.Entities;
 using GroceryStore.Core.Domain.Interfaces;
 
 namespace GroceryStore.Core.Application;
@@ -17,7 +15,7 @@ namespace GroceryStore.Core.Application;
     DAO - IDao<Country>, IDao<Region>, IDao<City> и IDao<Street>. А в параметры он бы принимал всего лишь названия этих
     четырех сущностей.
 */
-public class EntityService
+public class EntityService : IEntityService
 {
     public EntityService(IUnitOfWork unitOfWork, IMapper mapper)
     {
@@ -59,28 +57,35 @@ public class EntityService
         return entity == null ? new TDto() { IsEmpty = true } : (TDto)_mapper.EntityToDto(entity);
     }
 
-    public void Update<TEntity>(TEntity entity) where TEntity : class, IEntity => _daos[typeof(TEntity)].Update(entity);
-
-    public void Remove<TEntity>(TEntity entity) where TEntity : class, IEntity => _daos[typeof(TEntity)].Remove(entity);
-
-    public Exception? SaveChanges<TEntity>() where TEntity : class, IEntity => _daos[typeof(TEntity)].SaveChanges();
-    
-    public IDictionary<Type, Exception?> SaveAllChanges() =>
-        _daos.ToDictionary<KeyValuePair<Type, dynamic>, Type, Exception?>(typeDaoPair => typeDaoPair.Key, typeDaoPair =>
-            typeDaoPair.Value.SaveChanges());
-    
-    public void Dispose()
+    public bool Update<TEntity>(TEntity entity) where TEntity : class, IEntity
     {
-        foreach (var dao in _daos.Values)
-            dao.Dispose();
+        if (entity.IsEmpty())
+            return false;
+        
+        _unitOfWork.Update(entity);
+
+        return true;
     }
 
-    public async ValueTask DisposeAsync()
+    public bool Remove<TEntity>(TEntity entity) where TEntity : class, IEntity
     {
-        foreach (var dao in _daos.Values)
-            await dao.DisposeAsync();
+        if (entity.IsEmpty())
+            return false;
+        
+        _unitOfWork.Remove(entity);
+
+        return true;
     }
+
+    public Exception? SaveChanges<TEntity>() where TEntity : class, IEntity => _unitOfWork.SaveChanges<TEntity>();
+
+    public IDictionary<Type, Exception?> SaveAllChanges() => _unitOfWork.SaveAllChanges();
+
+    public void Dispose() => _unitOfWork.Dispose();
+
+    public async ValueTask DisposeAsync() => await _unitOfWork.DisposeAsync();
     
     private readonly IUnitOfWork _unitOfWork;
+    
     private readonly IMapper _mapper;
 }
