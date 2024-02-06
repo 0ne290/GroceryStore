@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace GroceryStore.Core.Domain.Interfaces;
 
-public interface IDao<TEntity> : IDisposable, IAsyncDisposable where TEntity : class, IEntity
+public interface IDao<TEntity> : IDisposable, IAsyncDisposable, ISaver where TEntity : class, IEntity
 {
     void Create(TEntity entity);
 
@@ -15,6 +15,4 @@ public interface IDao<TEntity> : IDisposable, IAsyncDisposable where TEntity : c
     void Update(TEntity entity);
 
     void Remove(TEntity entity);
-
-    Exception? SaveChanges();
 }

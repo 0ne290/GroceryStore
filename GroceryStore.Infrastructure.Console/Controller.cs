@@ -55,7 +55,7 @@ public class Controller<TEntity, TDto> : IController where TEntity : class, IEnt
         
         var exception = _entityService.SaveChanges<TEntity>();
                 
-        System.Console.WriteLine($"{result}. {exception?.Message ?? ""}");
+        System.Console.WriteLine($"Is the entry accepted for adding? {result}. Error message about saving changes: {exception?.InnerException?.Message ?? ""}");
 
         return result;
     }
@@ -91,7 +91,7 @@ public class Controller<TEntity, TDto> : IController where TEntity : class, IEnt
         
         var exception = _entityService.SaveChanges<TEntity>();
                 
-        System.Console.WriteLine($"{result}. {exception?.Message ?? ""}");
+        System.Console.WriteLine($"Is the entry accepted for updating? {result}. Error message about saving changes: {exception?.InnerException?.Message ?? ""}");
 
         return result;
     }
@@ -104,7 +104,7 @@ public class Controller<TEntity, TDto> : IController where TEntity : class, IEnt
         
         var exception = _entityService.SaveChanges<TEntity>();
                 
-        System.Console.WriteLine($"{result}. {exception?.Message ?? ""}");
+        System.Console.WriteLine($"Is the entry accepted for deletion? {result}. Error message about saving changes: {exception?.InnerException?.Message ?? ""}");
 
         return result;
     }
